@@ -1,0 +1,313 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "font-awesome";
+
+body {
+  padding-top: 60px;
+}
+
+/* Site-wide */
+.push-down-3 {
+  padding-top: 10em;
+}
+
+.push-down-2 {
+  padding-top: 3em;
+}
+
+.push-down-1 {
+  padding-top: 1em;
+}
+
+h1, h2 {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid lightgray;
+}
+
+
+.big-link a {
+  font-size: 3em;
+}
+
+a, a:focus {
+  color: orange;
+}
+
+a:hover {
+  color: #ee7600;
+}
+
+footer {
+  padding-top: 2em;
+  height: 16em;
+}
+
+.mini-link {
+  font-size: 18px;
+  color: #444;
+}
+
+.mini-link:hover, .mini-link:focus {
+  color: orange;
+  text-decoration: none;
+}
+
+hr {
+  border-width: 1px;
+  border-color: lightgray;
+}
+
+/* forms */
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+ -webkit-box-shadow: inset 0 -2px 0 orange;
+ box-shadow: inset 0 -2px 0 orange;
+}
+
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+  background-color: orange;
+  border-color: orange;
+}
+
+/* Navbar */
+
+.nav-container {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+/* Home */
+
+.jumbotron {
+  background: url(../assets/irongrip.png);
+}
+
+.jumbotron .logo {
+  color: orange;
+  text-align: center;
+  font-size: 7em;
+  border-bottom: none;
+  padding-bottom: 0.3em;
+}
+
+.jumbotron p {
+  text-align: center;
+  font-size: 2em;
+  color: white;
+}
+
+
+.best-of-week {
+  max-height: 200px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.ep-teaser .image-container {
+  height: 200px;
+  vertical-align: bottom;
+}
+
+.ep-teaser .teaser-text {
+  padding-top: 2em;
+  font-size: 16px;
+}
+
+.ep-teaser a {
+  color: #444;
+}
+
+.ep-teaser a:hover {
+  color: orange;
+  text-decoration: none;
+}
+
+.rating-container {
+  text-align: center;
+}
+
+.rating-container div {
+  font-size: 1em;
+}
+
+
+
+
+/* All podcasts */
+
+.ep-list-item {
+  padding-bottom: 3em;
+}
+
+.pagination-container {
+  text-align: center;
+}
+
+.pagination > li:first-child > a, .pagination > li:last-child > a, .pagination > li > a  {
+  border: none;
+  color: orange;
+  font-size: 2em;
+}
+
+.pagination > li > a:hover, .pagination > li > a:focus {
+  background: none;
+  color: orange;
+}
+
+
+
+/* Podcast page */
+
+
+.podcast-page-heading {
+  background-image: url(../assets/cardboard_flat.png);
+  padding-bottom: 5%;
+}
+
+.podcast-page-heading img {
+  max-width: 30%;
+  max-height: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+.podcast-page-content .desc {
+  font-size: 2em;
+}
+
+.podcast-page-content h2 {
+  font-size: 3em;
+}
+
+.podcast-page-content a {
+  color: #444;
+}
+
+.podcast-page-content a:hover,
+.podcast-page-content a:focus {
+  color: orange;
+  text-decoration: none;
+}
+
+.rating-container-orange {
+  text-align: center;
+}
+
+.rating-container-orange div {
+  font-size: 32px;
+  color: orange;
+}
+
+.rating-container-podcast {
+  text-align: center;
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.rating-container-podcast div {
+  font-size: 0.5em;
+}
+
+.podcast-page-content ol {
+  font-size: 2em;
+}
+
+.podcast-page-content li p {
+  font-size: 0.7em;
+}
+
+
+
+/* Best episodes */
+
+.best-episodes-content .row {
+  font-size: 1.5em;
+}
+
+.best-episodes-content .row p {
+  font-size: 0.7em;
+}
+
+.best-episodes-content img {
+  max-width: 100%;
+  max-height: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+.best-episodes-content .num {
+  font-size: 3em;
+}
+
+.best-episodes-content a {
+  color: #444;
+}
+
+.best-episodes-content a:hover,
+.best-episodes-content a:focus {
+  color: orange;
+  text-decoration: none;
+}
+
+.best-episodes-content .row {
+  padding-bottom: 1.5em;
+}
+
+.rating-container-best div {
+  font-size: 0.5em;
+}
+
+
+
+/* Episode page */
+
+.episode-page-content {
+  font-size: 2em;
+}
+
+.episode-page-content h1 {
+  text-align: center;
+  border-bottom: none;
+}
+
+.episode-page-content .review p {
+  font-size: 16px;
+  padding-bottom: 32px;
+}
+
+
+
+/* User page content */
+
+.user-page-content p {
+  font-size: 16px;
+}

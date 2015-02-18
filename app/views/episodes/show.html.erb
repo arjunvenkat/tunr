@@ -1,0 +1,138 @@
+
+<div class="podcast-page-heading push-down-3">
+  <div class="container">
+    <a href="podcast_page.html"><img src="<%= @episode.podcast.image_url %>" alt="tal"></a>
+  </div>
+</div>
+<div class="container episode-page-content">
+  <div class="row push-down-2">
+    <h1><a target="_blank" href="<%= @episode.url %>"><%= @episode.episode_num %> - <%= @episode.title %></a></h1>
+    <div class="rating-container-orange">
+      <div></div>
+    </div>
+    <div class="col-md-8 col-md-offset-2 push-down-1 desc">
+      <p><%= @episode.desc %></p>
+    </div>
+  </div>
+
+  <div class="row push-down-2">
+    <h2>Reviews</h2>
+    <div class="col-md-8 col-md-offset-2">
+      <div class="review">
+        <h3>
+          <i class="fa fa-thumbs-up"></i>
+          Arjun (32 reviews)
+          <div class="rating-container-podcast"><div></div></div>
+        </h3>
+        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+      </div>
+      <div class="review">
+        <h3>
+          <i class="fa fa-thumbs-down"></i>
+          Arjun (32 reviews)
+          <div class="rating-container-podcast"><div></div></div>
+        </h3>
+        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+      </div>
+      <div class="review">
+        <h3>
+          <i class="fa fa-thumbs-up"></i>
+          Arjun (32 reviews)
+          <div class="rating-container-podcast"><div></div></div>
+        </h3>
+        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+      </div>
+      <div class="review">
+        <h3>
+          <i class="fa fa-thumbs-up"></i>
+          Arjun (32 reviews)
+          <div class="rating-container-podcast"><div></div></div>
+        </h3>
+        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+      </div>
+      <div class="review">
+        <h3>
+          <i class="fa fa-thumbs-up"></i>
+          Arjun (32 reviews)
+          <div class="rating-container-podcast"><div></div></div>
+        </h3>
+        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="pagination-container">
+      <ul class="pagination">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">></a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  $('.rating-container-orange div, .rating-container-podcast div').raty({
+    score: 4,
+    path: 'assets',
+    starType: 'i'
+  });
+</script>
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Podcast:</strong>
+  <%= @episode.podcast_id %>
+</p>
+
+<p>
+  <strong>Season:</strong>
+  <%= @episode.season %>
+</p>
+
+<p>
+  <strong>Episode num:</strong>
+  <%= @episode.episode_num %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @episode.title %>
+</p>
+
+<p>
+  <strong>Desc:</strong>
+  <%= @episode.desc %>
+</p>
+
+<p>
+  <strong>Duration:</strong>
+  <%= @episode.duration %>
+</p>
+
+<p>
+  <strong>Published date:</strong>
+  <%= @episode.published_date %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @episode.url %>
+</p>
+
+<p>
+  <strong>Explicit:</strong>
+  <%= @episode.explicit %>
+</p>
+
+<%= link_to 'Edit', edit_episode_path(@episode) %> |
+<%= link_to 'Back', episodes_path %>
