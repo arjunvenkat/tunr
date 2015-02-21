@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
+  devise_for :users
+  resources :users
+
+  resources :reviews do
+    get :from_episode, on: :new
+  end
+
   resources :podcasts
 
   resources :episodes
+  get "/best_episodes" => 'episodes#best'
 
   root 'pages#home'
 

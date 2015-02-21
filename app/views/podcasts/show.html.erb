@@ -1,44 +1,53 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @podcast.name %>
-</p>
 
-<p>
-  <strong>Published by:</strong>
-  <%= @podcast.published_by %>
-</p>
+<div class="podcast-page-heading push-down-3">
+  <div class="container">
+    <a href="podcast_page.html"><img src="<%= @podcast.image_url %>" alt="tal"></a>
+  </div>
+</div>
+<div class="container podcast-page-content">
+  <div class="row push-down-2">
+    <div class="rating-container-orange">
+      <div></div>
+    </div>
+    <div class="col-md-8 col-md-offset-2 push-down-1 desc">
+      <p><%= @podcast.desc %></p>
+    </div>
+  </div>
 
-<p>
-  <strong>Desc:</strong>
-  <%= @podcast.desc %>
-</p>
+  <hr>
+  <div class="row">
+    <div class="pagination-container">
+      <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+    </div>
+  </div>
+  <div class="row">
 
-<p>
-  <strong>Update freq:</strong>
-  <%= @podcast.update_freq %>
-</p>
+    <div class="col-md-8 col-md-offset-2 push-down-2">
+      <ul>
+        <% @episodes.each do |episode| %>
+          <li>
+            <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
+            <p><%= truncate episode.desc, length: 200 %></p>
+          </li>
+        <% end %>
 
-<p>
-  <strong>Update day:</strong>
-  <%= @podcast.update_day %>
-</p>
+      </ul>
+    </div>
+  </div>
 
-<p>
-  <strong>Image url:</strong>
-  <%= @podcast.image_url %>
-</p>
 
-<p>
-  <strong>Host:</strong>
-  <%= @podcast.host %>
-</p>
 
-<p>
-  <strong>Created by:</strong>
-  <%= @podcast.created_by %>
-</p>
+  <div class="row">
+    <div class="pagination-container">
+      <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+    </div>
+
+  </div>
+</div>
+
+
+
 
 <%= link_to 'Edit', edit_podcast_path(@podcast) %> |
 <%= link_to 'Back', podcasts_path %>

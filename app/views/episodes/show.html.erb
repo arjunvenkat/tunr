@@ -5,13 +5,18 @@
   </div>
 </div>
 <div class="container episode-page-content">
-  <div class="row push-down-2">
+  <div class="row push-down-1">
     <h1><a target="_blank" href="<%= @episode.url %>"><%= @episode.episode_num %> - <%= @episode.title %></a></h1>
     <div class="rating-container-orange">
       <div></div>
     </div>
     <div class="col-md-8 col-md-offset-2 push-down-1 desc">
       <p><%= @episode.desc %></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div><a href="/reviews/new/from_episode?episode_id=<%= @episode.id %>">Create a review</a></div>
     </div>
   </div>
 
@@ -84,55 +89,6 @@
 </script>
 
 
-
-
-
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Podcast:</strong>
-  <%= @episode.podcast_id %>
-</p>
-
-<p>
-  <strong>Season:</strong>
-  <%= @episode.season %>
-</p>
-
-<p>
-  <strong>Episode num:</strong>
-  <%= @episode.episode_num %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @episode.title %>
-</p>
-
-<p>
-  <strong>Desc:</strong>
-  <%= @episode.desc %>
-</p>
-
-<p>
-  <strong>Duration:</strong>
-  <%= @episode.duration %>
-</p>
-
-<p>
-  <strong>Published date:</strong>
-  <%= @episode.published_date %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @episode.url %>
-</p>
-
-<p>
-  <strong>Explicit:</strong>
-  <%= @episode.explicit %>
-</p>
 
 <%= link_to 'Edit', edit_episode_path(@episode) %> |
 <%= link_to 'Back', episodes_path %>

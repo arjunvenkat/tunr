@@ -1,0 +1,49 @@
+
+<div class="container best-episodes-content push-down-2">
+  <div class="row push-down-2">
+    <h2>The best episodes</h2>
+    <div class="col-md-8 col-md-offset-2 push-down-2">
+      <% @episodes.each_with_index do |episode, index| %>
+        <div class="row">
+          <div class="col-md-2 num"><%= index + 1 %>.</div>
+          <div class="col-md-3">
+            <a href="episode_page.html"><img src="<%= episode.podcast.image_url %>" alt="serial"></a>
+          </div>
+          <div class="col-md-7">
+            <a href="episode_page.html"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a><br>
+            <div class="rating-container-best">
+              <i class="star-on-png"></i>
+              <i class="star-on-png"></i>
+              <i class="star-on-png"></i>
+              <i class="star-on-png"></i>
+              <i class="star-off-png"></i>
+            </div>
+            <p><%= truncate(episode.desc, length: 200) %></p>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="pagination-container">
+      <ul class="pagination">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer></footer>
+
+<script>
+  $('.rating-container-orange div, .rating-container-best div').raty({
+    score: 4,
+    path: 'images',
+    starType: 'i'
+  });
+</script>

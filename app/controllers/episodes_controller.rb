@@ -7,6 +7,10 @@ class EpisodesController < ApplicationController
     @episodes = Episode.all
   end
 
+  def best
+    @episodes = Episode.all
+  end
+
   # GET /episodes/1
   # GET /episodes/1.json
   def show
