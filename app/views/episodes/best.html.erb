@@ -10,7 +10,7 @@
             <a href="episode_page.html"><img src="<%= episode.podcast.image_url %>" alt="serial"></a>
           </div>
           <div class="col-md-7">
-            <a href="episode_page.html"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a><br>
+            <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a><br>
             <div class="rating-container-best">
               <i class="star-on-png"></i>
               <i class="star-on-png"></i>

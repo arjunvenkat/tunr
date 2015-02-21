@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'will_paginate', '~> 3.0.6'
-gem "font-awesome-rails"
+# gem "font-awesome-rails"
 gem 'devise'
 gem 'mechanize'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

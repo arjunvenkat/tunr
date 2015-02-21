@@ -1,7 +1,7 @@
 
 <div class="podcast-page-heading push-down-3">
   <div class="container">
-    <a href="podcast_page.html"><img src="<%= @episode.podcast.image_url %>" alt="tal"></a>
+    <a href="<%= podcast_url(@episode.podcast) %>"><img src="<%= @episode.podcast.image_url %>" alt="tal"></a>
   </div>
 </div>
 <div class="container episode-page-content">
@@ -23,46 +23,17 @@
   <div class="row push-down-2">
     <h2>Reviews</h2>
     <div class="col-md-8 col-md-offset-2">
-      <div class="review">
-        <h3>
-          <i class="fa fa-thumbs-up"></i>
-          Arjun (32 reviews)
-          <div class="rating-container-podcast"><div></div></div>
-        </h3>
-        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
-      </div>
-      <div class="review">
-        <h3>
-          <i class="fa fa-thumbs-down"></i>
-          Arjun (32 reviews)
-          <div class="rating-container-podcast"><div></div></div>
-        </h3>
-        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
-      </div>
-      <div class="review">
-        <h3>
-          <i class="fa fa-thumbs-up"></i>
-          Arjun (32 reviews)
-          <div class="rating-container-podcast"><div></div></div>
-        </h3>
-        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
-      </div>
-      <div class="review">
-        <h3>
-          <i class="fa fa-thumbs-up"></i>
-          Arjun (32 reviews)
-          <div class="rating-container-podcast"><div></div></div>
-        </h3>
-        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
-      </div>
-      <div class="review">
-        <h3>
-          <i class="fa fa-thumbs-up"></i>
-          Arjun (32 reviews)
-          <div class="rating-container-podcast"><div></div></div>
-        </h3>
-        <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
-      </div>
+      <% @episode.reviews.each do |review| %>
+        <div class="review">
+          <h3>
+            <i class="fa fa-thumbs-up"></i>
+            <%= review.user.email %> (<%= review.user.reviews.count %>)
+            <div class="rating-container-podcast"><div></div></div>
+          </h3>
+          <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+        </div>
+
+      <% end %>
 
     </div>
   </div>
