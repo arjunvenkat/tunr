@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :upvotes
+
   devise_for :users
   resources :users
 

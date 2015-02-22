@@ -6,7 +6,11 @@
 </div>
 <div class="container episode-page-content">
   <div class="row push-down-1">
-    <h1><a target="_blank" href="<%= @episode.url %>"><%= @episode.episode_num %> - <%= @episode.title %></a></h1>
+    <h1>
+      <a target="_blank" href="<%= @episode.url %>">
+        <%= @episode.episode_num %> - <%= @episode.title %>
+      </a>
+    </h1>
     <div class="rating-container-orange">
       <div></div>
     </div>
@@ -23,10 +27,15 @@
   <div class="row push-down-2">
     <h2>Reviews</h2>
     <div class="col-md-8 col-md-offset-2">
-      <% @episode.reviews.each do |review| %>
+      <% @reviews.each do |review| %>
         <div class="review review_<%= review.id %>">
           <h3>
-            <i class="fa fa-thumbs-up"></i>
+            <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+            <% if upvote %>
+              <i class="fa fa-thumbs-up"></i>
+            <% else %>
+              <i class="fa fa-thumbs-o-up"></i>
+            <% end %>
             <%= review.user.email %> (<%= review.user.reviews.count %>)
             <div class="rating-container-podcast">
               <div></div>
@@ -45,20 +54,13 @@
   </div>
   <div class="row">
     <div class="pagination-container">
-      <ul class="pagination">
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">></a></li>
-      </ul>
+      <%= will_paginate @reviews, :previous_label => '< Prev', :next_label => 'Next >' %>
     </div>
-
   </div>
 </div>
 
 <script>
-  <% @episode.reviews.each do |review| %>
+  <% @reviews.each do |review| %>
     $('.review_<%= review.id %> .rating-container-podcast div').raty({
       score: <%= review.rating %>,
       path: 'assets',
@@ -72,6 +74,28 @@
     path: 'assets',
     starType: 'i'
   });
+
+  $('.rating-container-orange div i').click(function(){
+    var rating = $(this).attr('data-alt');
+    console.log(rating);
+    $.ajax({
+        dataType: "json",
+        url: "/reviews",
+        type: "POST",
+        data: {review: {
+                 user_id: <%= current_user.id %>,
+                 episode_id: <%= @episode.id %>,
+                 rating: rating,
+                 contents: ""
+               }},
+        success: addNewReview(resp)
+    });
+  });
+
+  function addNewReview(data) {
+    alert('inside')
+    console.log(data);
+  }
 
 </script>
 

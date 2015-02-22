@@ -8,12 +8,17 @@ class EpisodesController < ApplicationController
   end
 
   def best
-    @episodes = Episode.all
+    @episodes = Episode.order("published_date DESC")
   end
 
   # GET /episodes/1
   # GET /episodes/1.json
   def show
+
+    @reviews = @episode
+                  .reviews
+                  .paginate(:page => params[:page], :per_page => 10)
+                  .order('created_at DESC')
   end
 
   # GET /episodes/new

@@ -15,6 +15,12 @@ u1.password = "12341234"
 u1.password_confirmation = "12341234"
 u1.save
 
+u2 = User.new
+u2.email = "b@b.com"
+u2.password = "12341234"
+u2.password_confirmation = "12341234"
+u2.save
+
 puts "#{User.count} users in the database"
 
 

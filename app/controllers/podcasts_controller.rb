@@ -10,7 +10,7 @@ class PodcastsController < ApplicationController
   # GET /podcasts/1
   # GET /podcasts/1.json
   def show
-    @episodes = @podcast.episodes.paginate(:page => params[:page], :per_page => 10).order('episode_num DESC')
+    @episodes = @podcast.episodes.paginate(:page => params[:page], :per_page => 10).order('published_date DESC')
   end
 
   # GET /podcasts/new
