@@ -14,8 +14,6 @@
  *= require_self
  */
 
-@import "font-awesome";
-
 body {
   padding-top: 60px;
 }
@@ -118,7 +116,7 @@ h1 .small {
 /* Home */
 
 .jumbotron {
-  background: url(../assets/irongrip.png);
+  background: url(<%= asset_path('irongrip.png') %>);
 }
 
 .jumbotron .logo {
@@ -210,7 +208,7 @@ h1 .small {
 
 
 .podcast-page-heading {
-  background-image: url(../assets/cardboard_flat.png);
+  background-image: url(<%= asset_path('cardboard_flat.png') %>);
   padding-bottom: 5%;
 }
 
