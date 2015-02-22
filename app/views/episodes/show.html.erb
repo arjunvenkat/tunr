@@ -8,7 +8,11 @@
   <div class="row push-down-1">
     <h1><a target="_blank" href="<%= @episode.url %>"><%= @episode.episode_num %> - <%= @episode.title %></a></h1>
     <div class="rating-container-orange">
-      <div></div>
+      <!-- TODO fix ratings -->
+      <% @episode.rating.to_i.times do  %>
+        <i class="star-on-png"></i>
+      <% end %>
+      <i class="star-half"></i>
     </div>
     <div class="col-md-8 col-md-offset-2 push-down-1 desc">
       <p><%= @episode.desc %></p>
@@ -28,9 +32,13 @@
           <h3>
             <i class="fa fa-thumbs-up"></i>
             <%= review.user.email %> (<%= review.user.reviews.count %>)
-            <div class="rating-container-podcast"><div></div></div>
+            <div class="rating-container-podcast">
+              <% review.rating.times do %>
+                <i class="star-on-png"></i>
+              <% end %>
+            </div>
           </h3>
-          <p>The worst. The absolute fucking worst. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit maiores tempore vero reiciendis amet possimus unde facilis voluptates, dolores velit, odit asperiores repellendus quasi! Sequi amet ullam, numquam saepe eligendi.</p>
+          <p><%= review.contents %></p>
         </div>
 
       <% end %>
