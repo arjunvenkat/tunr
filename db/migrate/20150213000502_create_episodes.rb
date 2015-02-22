@@ -3,7 +3,7 @@ class CreateEpisodes < ActiveRecord::Migration
     create_table :episodes do |t|
       t.integer :podcast_id
       t.string :season
-      t.string :episode_num
+      t.integer :episode_num
       t.string :title
       t.text :desc
       t.integer :duration

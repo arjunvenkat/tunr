@@ -62,6 +62,7 @@
     $('.review_<%= review.id %> .rating-container-podcast div').raty({
       score: <%= review.rating %>,
       path: 'assets',
+      readOnly: true,
       starType: 'i'
     });
   <% end %>

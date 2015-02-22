@@ -2,7 +2,7 @@
 
 <div class="podcast-page-heading push-down-3">
   <div class="container">
-    <a href="podcast_page.html"><img src="<%= @podcast.image_url %>" alt="tal"></a>
+    <a href="#"><img src="<%= @podcast.image_url %>" alt="tal"></a>
   </div>
 </div>
 <div class="container podcast-page-content">
@@ -11,22 +11,23 @@
       <div></div>
     </div>
     <div class="col-md-8 col-md-offset-2 push-down-1 desc">
+      <h1><%= @podcast.name %></h1>
       <p><%= @podcast.desc %></p>
     </div>
   </div>
 
-  <hr>
   <div class="row">
-    <div class="pagination-container">
-      <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
-    </div>
   </div>
   <div class="row">
 
     <div class="col-md-8 col-md-offset-2 push-down-2">
+      <h2>Episodes</h2>
+      <div class="pagination-container">
+        <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+      </div>
       <ul>
         <% @episodes.each do |episode| %>
-          <li>
+          <li class="episode_<%= episode.id %>">
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
             <p><%= truncate episode.desc, length: 200 %></p>
           </li>
@@ -45,6 +46,19 @@
 
   </div>
 </div>
+
+<script>
+  <% @podcast.episodes.each do |episode| %>
+
+    $('.episode_<%= episode.id %> .rating-container-podcast div').raty({
+      score: <%= episode.rating ? episode.rating : 0 %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+
+  <% end %>
+</script>
 
 
 
