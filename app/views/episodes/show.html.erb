@@ -38,9 +38,32 @@
           <h3>
             <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
             <% if upvote %>
-              <i class="fa fa-thumbs-up"></i>
+              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"></i>
+              <script>
+                $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                  $.ajax({
+                      dataType: "script",
+                      url: "/upvotes/<%= upvote.id %>",
+                      type: "DESTROY",
+                  })
+                });
+              </script>
             <% else %>
-              <i class="fa fa-thumbs-o-up"></i>
+              <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"></i>
+              <script type="text/javascript">
+                $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                  $.ajax({
+                      dataType: "script",
+                      url: "/upvotes",
+                      type: "POST",
+                      data: {
+                        upvote: {
+                         user_id: <%= current_user.id %>,
+                         review_id: <%= review.id %>,
+                        }}
+                  })
+                });
+                </script>
             <% end %>
             <%= review.user.email %> (<%= review.user.reviews.count %>)
             <div class="rating-container-podcast">
@@ -52,7 +75,6 @@
           </h3>
           <p><%= review.contents %></p>
         </div>
-
 
       <% end %>
 
@@ -96,6 +118,9 @@
           }}
     })
   });
+
+
+
 
 
 </script>

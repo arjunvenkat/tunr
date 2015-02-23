@@ -1,6 +1,7 @@
 class Review < ActiveRecord::Base
   belongs_to :episode
   belongs_to :user
+  has_many :upvotes
   after_save :calcuate_average_rating
 
   private

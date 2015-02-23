@@ -30,6 +30,7 @@ class UpvotesController < ApplicationController
       if @upvote.save
         format.html { redirect_to @upvote, notice: 'Upvote was successfully created.' }
         format.json { render :show, status: :created, location: @upvote }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @upvote.errors, status: :unprocessable_entity }
@@ -54,10 +55,12 @@ class UpvotesController < ApplicationController
   # DELETE /upvotes/1
   # DELETE /upvotes/1.json
   def destroy
+    @upvote_id = @upvote.id
     @upvote.destroy
     respond_to do |format|
       format.html { redirect_to upvotes_url, notice: 'Upvote was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 

@@ -1,0 +1,6 @@
+$('.not-upvoted.upvote_review_<%= @upvote.review.id %>')
+    .removeClass("fa-thumbs-o-up")
+    .removeClass("not-upvoted")
+    .addClass("upvoted")
+    .addClass("fa-thumbs-up")
+    .addClass("upvote_<%= @upvote.id %>")
