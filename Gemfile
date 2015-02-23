@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'will_paginate', '~> 3.0.6'
+gem 'kaminari'
 # gem "font-awesome-rails"
 gem 'devise'
 gem 'mechanize'

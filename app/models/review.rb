@@ -4,6 +4,8 @@ class Review < ActiveRecord::Base
   has_many :upvotes
   after_save :calcuate_average_rating
 
+  paginates_per 12
+
   private
     def calcuate_average_rating
       episode = self.episode

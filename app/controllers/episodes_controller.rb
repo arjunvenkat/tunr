@@ -9,7 +9,9 @@ class EpisodesController < ApplicationController
 
   def best
     # @episodes = Episode.order("published_date DESC")
-    @episodes = Episode.paginate(:page => params[:page], :per_page => 10).order('published_date DESC').order("published_date DESC")
+    @episodes = Episode
+                  .order('published_date DESC')
+                  .page params[:page]
   end
 
   # GET /episodes/1
@@ -18,8 +20,8 @@ class EpisodesController < ApplicationController
 
     @reviews = @episode
                   .reviews
-                  .paginate(:page => params[:page], :per_page => 10)
                   .order('created_at DESC')
+                  .page params[:page]
   end
 
   # GET /episodes/new

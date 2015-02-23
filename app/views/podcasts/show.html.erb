@@ -23,7 +23,7 @@
     <div class="col-md-8 col-md-offset-2 push-down-2">
       <h2>Episodes</h2>
       <div class="pagination-container">
-        <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+        <%= paginate @episodes %>
       </div>
       <ul>
         <% @episodes.each do |episode| %>
@@ -41,7 +41,7 @@
 
   <div class="row">
     <div class="pagination-container">
-      <%= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+      <%#= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
     </div>
 
   </div>
