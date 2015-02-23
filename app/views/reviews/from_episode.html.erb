@@ -1,30 +1,53 @@
-<h3>New Review for Episode <%= @episode.episode_num %> of <%= @episode.podcast.name %></h3>
+<div class="container push-down-2 new-rating-page">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
 
-<%= form_for(@episode.reviews.build) do |f| %>
-  <% if @review.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+      <h3>New Review for Episode <%= @episode.episode_num %> of <br> <%= @episode.podcast.name %></h3>
 
-      <ul>
-      <% @review.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+      <%= form_for(@episode.reviews.build) do |f| %>
+        <% if @review.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+            <ul>
+            <% @review.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="rating-container-big push-down-1">
+          <div></div>
+        </div>
+        <div class="field">
+          <%= f.hidden_field :episode_id, value: params[:episode_id] %>
+        </div>
+
+        <div class="form-group push-down-1">
+          <%= f.label :contents, class: "sr-only" %>
+          <div class="col-md-8 col-md-offset-2">
+            <%= f.text_area :contents, class: "form-control", placeholder: "Write your review here", rows: 5 %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10 push-down-1">
+            <%= f.submit class: "btn btn-default" %>
+          </div>
+        </div>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.hidden_field :episode_id, value: params[:episode_id] %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :rating %><br>
-    <%= f.number_field :rating %>
-  </div>
-  <div class="field">
-    <%= f.label :contents %><br>
-    <%= f.text_area :contents %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
+
+
+<script>
+  $('.rating-container-big div').raty({
+    score: 0,
+    path: 'assets',
+    scoreName: 'review[rating]',
+    scoreId: 'review_rating',
+    starType: 'i'
+  });
+</script>

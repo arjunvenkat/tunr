@@ -11,9 +11,15 @@
         <%= @episode.episode_num %> - <%= @episode.title %>
       </a>
     </h1>
-    <div class="rating-container-orange">
-      <div></div>
-    </div>
+    <% if Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+      <div class="rating-container-big orange">
+        <div></div>
+      </div>
+    <% else %>
+      <div class="rating-container-big">
+        <div></div>
+      </div>
+    <% end %>
     <div class="col-md-8 col-md-offset-2 push-down-1 desc">
       <p><%= @episode.desc %></p>
     </div>
@@ -26,7 +32,7 @@
 
   <div class="row push-down-2">
     <h2>Reviews</h2>
-    <div class="col-md-8 col-md-offset-2">
+    <div class="reviews col-md-8 col-md-offset-2">
       <% @reviews.each do |review| %>
         <div class="review review_<%= review.id %>">
           <h3>
@@ -69,33 +75,28 @@
     });
   <% end %>
 
-  $('.rating-container-orange div').raty({
-    score: <%= @episode.rating %>,
+  $('.rating-container-big div').raty({
+    score: <%= @episode.rating ? @episode.rating : 0 %>,
     path: 'assets',
     starType: 'i'
   });
 
-  $('.rating-container-orange div i').click(function(){
+  $('.rating-container-big div i').click(function(){
     var rating = $(this).attr('data-alt');
-    console.log(rating);
     $.ajax({
-        dataType: "json",
+        dataType: "script",
         url: "/reviews",
         type: "POST",
-        data: {review: {
-                 user_id: <%= current_user.id %>,
-                 episode_id: <%= @episode.id %>,
-                 rating: rating,
-                 contents: ""
-               }},
-        success: addNewReview(resp)
-    });
+        data: {
+          review: {
+           user_id: <%= current_user.id %>,
+           episode_id: <%= @episode.id %>,
+           rating: rating,
+           contents: ""
+          }}
+    })
   });
 
-  function addNewReview(data) {
-    alert('inside')
-    console.log(data);
-  }
 
 </script>
 

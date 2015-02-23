@@ -36,6 +36,7 @@ class ReviewsController < ApplicationController
       if @review.save
         format.html { redirect_to @review.episode, notice: 'Review was successfully created.' }
         format.json { render :show, status: :created, location: @review }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @review.errors, status: :unprocessable_entity }
