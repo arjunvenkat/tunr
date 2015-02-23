@@ -8,7 +8,8 @@ class EpisodesController < ApplicationController
   end
 
   def best
-    @episodes = Episode.order("published_date DESC")
+    # @episodes = Episode.order("published_date DESC")
+    @episodes = Episode.paginate(:page => params[:page], :per_page => 10).order('published_date DESC').order("published_date DESC")
   end
 
   # GET /episodes/1

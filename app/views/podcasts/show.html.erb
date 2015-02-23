@@ -48,7 +48,7 @@
 </div>
 
 <script>
-  <% @podcast.episodes.each do |episode| %>
+  <% @episodes.each do |episode| %>
 
     $('.episode_<%= episode.id %> .rating-container-podcast div').raty({
       score: <%= episode.rating ? episode.rating : 0 %>,
