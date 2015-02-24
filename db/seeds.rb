@@ -30,6 +30,7 @@ u2.save
   u.email = Faker::Internet.safe_email(u.username)
   u.password = "12341234"
   u.password_confirmation = "12341234"
+  u.save
 end
 
 puts "#{User.count} users in the database"
@@ -55,4 +56,4 @@ p3.desc = "This American Life is a weekly public radio show broadcast on more th
 p3.image_url = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/This_American_Life_logo.svg/252px-This_American_Life_logo.svg.png"
 p3.save
 
-puts "#{Podcast.count} users in the database"
+puts "#{Podcast.count} podcasts in the database"

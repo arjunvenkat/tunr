@@ -6,6 +6,6 @@ class User < ActiveRecord::Base
   has_many :reviews
   has_many :upvotes
 
-  validates :username, :email, :password, :password_confirmation, presence: true
+  validates :username, :email, presence: true
   validates :username, :email, uniqueness: true
 end
