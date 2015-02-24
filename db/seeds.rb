@@ -10,16 +10,27 @@
 User.destroy_all
 
 u1 = User.new
+u1.username = "arjun_o_0"
 u1.email = "a@a.com"
 u1.password = "12341234"
 u1.password_confirmation = "12341234"
 u1.save
 
 u2 = User.new
-u2.email = "b@b.com"
+u2.username = "kwyjibo312"
+u2.email = "p@p.com"
 u2.password = "12341234"
 u2.password_confirmation = "12341234"
 u2.save
+
+
+50.times do
+  u = User.new
+  u.username = Faker::Internet.user_name
+  u.email = Faker::Internet.safe_email(u.username)
+  u.password = "12341234"
+  u.password_confirmation = "12341234"
+end
 
 puts "#{User.count} users in the database"
 
