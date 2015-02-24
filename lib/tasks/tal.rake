@@ -66,7 +66,13 @@ namespace :scrape do
                 # puts
               end
 
-              text.encode('utf-8', :fallback => fallback)
+              ep_desc.encode('utf-8', :fallback => fallback)
+                            .gsub('&amp;', '&')
+                            .gsub('&nbsp;', ' ')
+                            .gsub('&ldquo;', '\"')
+                            .gsub('&rdquo;', '\"')
+                            .gsub('&rsquo;', '\'')
+                            .gsub('&rsquo;', '\"')
 
               e = Episode.new
               e.podcast_id = p.id
@@ -85,7 +91,7 @@ namespace :scrape do
               #   csv << [season, ep_num, ep_name, ep_desc, 60, ep_date, ep_link, ""]
               # end
 
-              # puts "season: #{season} ep:#{ep_num} - #{ep_name} ** completed **"
+              puts "season: #{season} ep:#{ep_num} - #{ep_name} ** completed **"
             end
           end
         end
