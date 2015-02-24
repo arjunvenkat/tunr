@@ -4,6 +4,8 @@ class Review < ActiveRecord::Base
   has_many :upvotes
   after_save :calcuate_average_rating
 
+  validates_uniqueness_of :user_id, :scope => :episode_id
+
   paginates_per 12
 
   private
