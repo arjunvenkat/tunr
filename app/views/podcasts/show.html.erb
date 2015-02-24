@@ -17,17 +17,14 @@
   </div>
 
   <div class="row">
-  </div>
-  <div class="row">
-
-    <div class="col-md-8 col-md-offset-2 push-down-2">
+    <div class="col-md-8 col-md-offset-2 push-down-2 ep-container">
       <h2>Episodes</h2>
       <div class="pagination-container">
         <%= paginate @episodes %>
       </div>
-      <ul>
+      <ul class="episodes">
         <% @episodes.each do |episode| %>
-          <li class="episode_<%= episode.id %>">
+          <li class="episode_<%= episode.id %> episode">
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
             <p><%= truncate episode.desc, length: 200 %></p>
           </li>
@@ -41,7 +38,7 @@
 
   <div class="row">
     <div class="pagination-container">
-      <%#= will_paginate @episodes, :previous_label => '< Prev', :next_label => 'Next >' %>
+      <%= paginate @episodes %>
     </div>
 
   </div>

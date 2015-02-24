@@ -11,6 +11,12 @@ class PodcastsController < ApplicationController
   # GET /podcasts/1.json
   def show
     @episodes = @podcast.episodes.order('published_date DESC').page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @episodes}
+      format.js
+    end
   end
 
   # GET /podcasts/new
