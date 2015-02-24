@@ -56,6 +56,7 @@ class UpvotesController < ApplicationController
   # DELETE /upvotes/1.json
   def destroy
     @upvote_id = @upvote.id
+    @upvote_review_id = @upvote.review.id
     @upvote.destroy
     respond_to do |format|
       format.html { redirect_to upvotes_url, notice: 'Upvote was successfully destroyed.' }
