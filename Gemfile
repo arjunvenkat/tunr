@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'jquery-turbolinks'
 gem 'kaminari'
 # gem "font-awesome-rails"
 gem 'devise'
