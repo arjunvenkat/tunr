@@ -10,7 +10,7 @@ class EpisodesController < ApplicationController
   def best
     # @episodes = Episode.order("published_date DESC")
     @episodes = Episode
-                  .order('published_date DESC')
+                  .order('rating DESC')
                   .page params[:page]
   end
 
