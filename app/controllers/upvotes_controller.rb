@@ -26,6 +26,8 @@ class UpvotesController < ApplicationController
   def create
     @upvote = Upvote.new(upvote_params)
 
+
+
     respond_to do |format|
       if @upvote.save
         format.html { redirect_to @upvote, notice: 'Upvote was successfully created.' }
@@ -56,7 +58,8 @@ class UpvotesController < ApplicationController
   # DELETE /upvotes/1.json
   def destroy
     @upvote_id = @upvote.id
-    @upvote_review_id = @upvote.review.id
+    @review = @upvote.review
+    @user = @upvote.review.user
     @upvote.destroy
     respond_to do |format|
       format.html { redirect_to upvotes_url, notice: 'Upvote was successfully destroyed.' }

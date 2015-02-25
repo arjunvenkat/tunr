@@ -3,9 +3,12 @@ class Upvote < ActiveRecord::Base
   belongs_to :user
 
   validate :one_upvote_per_user_per_episode
+  after_create :increment_user_upvoted_count
+  before_destroy :decrement_user_upvoted_count
 
   # validates_uniqueness_of :user_id, :scope => :review_id
   validates_associated :review, :user
+
 
   def one_upvote_per_user_per_episode
     episode_upvotes = self.review.episode.upvotes
@@ -14,4 +17,17 @@ class Upvote < ActiveRecord::Base
       errors.add(:user, "can only have one upvote per episode")
     end
   end
+
+  private
+    def increment_user_upvoted_count
+      user = self.review.user
+      user.upvoted_count += 1
+      user.save
+    end
+
+    def decrement_user_upvoted_count
+      user = self.review.user
+      user.upvoted_count -= 1
+      user.save
+    end
 end

@@ -67,8 +67,8 @@
             <% end %>
             <%= review.user.username %>
             <div class="user-stats">
-              <div><%= review.user.upvotes.count %> upvotes</div>
-              <div><%= review.user.reviews.count %> reviews</div>
+              <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
+              <div>created <%= review.user.reviews.count %> reviews</div>
             </div>
             <div class="rating-container-podcast">
               <div></div>

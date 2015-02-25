@@ -5,10 +5,10 @@ $('.upvote_<%= @upvote_id %>')
   .removeClass("upvoted")
   .removeClass("fa-thumbs-up")
   .removeClass("upvote_<%= @upvote_id %>")
-  .addClass("upvote_review_<%= @upvote_review_id %>");
+  .addClass("upvote_review_<%= @review.id %>");
 
 
-$('.not-upvoted.upvote_review_<%= @upvote_review_id %>').unbind().click(function(){
+$('.not-upvoted.upvote_review_<%= @review.id %>').unbind().click(function(){
   $.ajax({
     dataType: "script",
     url: "/upvotes",
@@ -16,11 +16,15 @@ $('.not-upvoted.upvote_review_<%= @upvote_review_id %>').unbind().click(function
     data: {
       upvote: {
        user_id: <%= 1 %>,
-       review_id: <%= @upvote_review_id %>,
+       review_id: <%= @review.id %>,
       }
     }
   });
 });
+
+$('.review_<%= @upvote.review.id  %> .upvote-num').text(<%= @upvote.review.upvotes.count %>);
+
+$('.review_<%= @review.id  %> .user-upvote-num').text(<%= @user.upvoted_count %> + " upvotes");
 
 
 
