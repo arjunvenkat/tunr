@@ -7,7 +7,7 @@ class PagesController < ApplicationController
     @episodes = Episode
                   .where.not(rating: nil)
                   .order('rating DESC')
-                  .limit(12)
+                  .limit(8)
   end
 end
 
