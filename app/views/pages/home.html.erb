@@ -12,63 +12,22 @@
     <h3>Best of the week</h3>
   </div>
   <div class="row push-down-2">
-    <div class="col-md-3">
-      <div class="ep-teaser">
-        <div class="image-container">
-          <a href="#"><img class="best-of-week" src="<%= asset_path('tal_logo.png') %>" alt="tal"></a>
-        </div>
-        <div class="teaser-text">
-          <div class="rating-container">
-            <div></div>
+    <% @episodes.each do |episode| %>
+      <div class="col-md-3">
+        <div class="ep-teaser">
+          <div class="image-container">
+            <a href="#"><img class="best-of-week" src="<%= episode.podcast.image_url %>" alt="<%= episode.podcast.name %>"></a>
           </div>
-          <h5><a href="#"><strong>Ep 22:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste nobis aliquam, dolor culpa rerum eligendi distinctio! Illum architecto aliquam culpa...</p>
+          <div class="teaser-text">
+            <div class="rating-container">
+              <div></div>
+            </div>
+            <h5><a href="<%= episode_url(episode) %>"><strong>Ep <%= episode.episode_num %>:</strong> <%= episode.title %></a></h5>
+            <p><%= truncate(episode.desc, length: 250) %></p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-3">
-      <div class="ep-teaser">
-        <div class="image-container">
-          <a href="#"><img class="best-of-week" src="<%= asset_path('invisibilia_logo.png') %>" alt="invisibilia"></a>
-        </div>
-        <div class="teaser-text">
-          <div class="rating-container">
-            <div></div>
-          </div>
-          <h5><a href="#"><strong>Ep 22:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste nobis aliquam, dolor culpa rerum eligendi distinctio! Illum architecto aliquam culpa...</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="ep-teaser">
-        <div class="image-container">
-          <a href="#"><img class="best-of-week" src="<%= asset_path('serial_logo.png') %>" alt="serial"></a>
-        </div>
-        <div class="teaser-text">
-          <div class="rating-container">
-            <div></div>
-          </div>
-          <h5><a href="#"><strong>Ep 22:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste nobis aliquam, dolor culpa rerum eligendi distinctio! Illum architecto aliquam culpa...</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="ep-teaser">
-        <div class="image-container">
-          <a href="#"><img class="best-of-week" src="<%= asset_path('wtf_logo.png') %>" alt="wtf"></a>
-        </div>
-
-        <div class="teaser-text">
-          <div class="rating-container">
-            <div></div>
-          </div>
-          <h5><a href="#"><strong>Ep 22:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste nobis aliquam, dolor culpa rerum eligendi distinctio! Illum architecto aliquam culpa...</p>
-        </div>
-      </div>
-    </div>
+    <% end %>
   </div>
   <div class="row">
     <div class="big-link push-down-2"><a href="/podcasts">All podcasts</a></div>
