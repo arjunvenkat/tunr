@@ -6,6 +6,14 @@ class User < ActiveRecord::Base
   has_many :reviews
   has_many :upvotes
 
+  def followers
+    Following.where(followed_id: self.id).map { |following| following.follower }
+  end
+
+  def follows
+    Following.where(follower_id: self.id).map { |following| following.followed}
+  end
+
   paginates_per 10
 
 

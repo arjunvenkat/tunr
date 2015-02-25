@@ -3,7 +3,7 @@
      <h1><%= @user.username %></h1>
      <div class="tagline"><%= @user.desc %></div>
       <div style="background-image: url(<%= Faker::Avatar.image(@user.username) %>)" class="user-profile-pic-circular"></div>
-      <h3>created <%= @user.reviews.count %> reviews ● received <%= @user.upvoted_count %> upvotes ● has 35 followers </h3>
+      <h3>created <%= @user.reviews.count %> reviews ● received <%= @user.upvoted_count %> upvotes ● has <%= @user.followers.count %> followers </h3>
   </div>
 </div>
 

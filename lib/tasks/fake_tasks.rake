@@ -34,4 +34,18 @@ namespace :fake do
 
 
   end
+
+  desc "create fake follows"
+  task :follows => :environment do
+    400.times do
+      user1 = User.offset(rand(User.count)).first
+      user2 = User.offset(rand(User.count)).first
+      following = Following.new
+      following.follower_id = user1.id
+      following.followed_id = user2.id
+      following.save
+    end
+    puts "400 fake follows created"
+  end
+
 end
