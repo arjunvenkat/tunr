@@ -24,7 +24,7 @@ $('.not-upvoted.upvote_review_<%= @review.id %>').unbind().click(function(){
 
 $('.review_<%= @upvote.review.id  %> .upvote-num').text(<%= @upvote.review.upvoted_count %>);
 
-$('.review_<%= @review.id  %> .user-upvote-num').text(<%= @user.upvoted_count %> + " upvotes");
+$('.review_<%= @review.id  %> .user-upvote-num').text("received " + <%= @user.upvoted_count %> + " upvotes");
 
 
 
