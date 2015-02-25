@@ -21,6 +21,7 @@ class EpisodesController < ApplicationController
 
     @reviews = @episode
                   .reviews
+                  .order('upvoted_count DESC')
                   .order('created_at DESC')
                   .page params[:page]
   end

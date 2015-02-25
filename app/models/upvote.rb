@@ -4,7 +4,9 @@ class Upvote < ActiveRecord::Base
 
   validate :one_upvote_per_user_per_episode
   after_create :increment_user_upvoted_count
+  after_create :increment_review_upvoted_count
   before_destroy :decrement_user_upvoted_count
+  before_destroy :decrement_review_upvoted_count
 
   # validates_uniqueness_of :user_id, :scope => :review_id
   validates_associated :review, :user
@@ -25,9 +27,21 @@ class Upvote < ActiveRecord::Base
       user.save
     end
 
+    def increment_review_upvoted_count
+      review = self.review
+      review.upvoted_count += 1
+      review.save
+    end
+
     def decrement_user_upvoted_count
       user = self.review.user
       user.upvoted_count -= 1
       user.save
+    end
+
+    def decrement_review_upvoted_count
+      review = self.review
+      review.upvoted_count -= 1
+      review.save
     end
 end

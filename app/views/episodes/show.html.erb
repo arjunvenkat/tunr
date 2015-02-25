@@ -38,7 +38,7 @@
           <h3>
             <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
             <% if upvote %>
-              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvotes.count %></small></i>
+              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
               <script>
                 $('.upvoted.upvote_<%= upvote.id %>').click(function(){
                   $.ajax({
@@ -49,7 +49,7 @@
                 });
               </script>
             <% else %>
-              <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvotes.count %></small></i>
+              <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
               <script type="text/javascript">
                 $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
                   $.ajax({
