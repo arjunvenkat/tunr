@@ -1,44 +1,91 @@
-<p id="notice"><%= notice %></p>
+<div class="user-page-heading push-down-3">
+  <div align ="center" class="container">
+     <h1><%= @user.username %></h1>
+     <div class="tagline"><%= @user.desc %></div>
+      <div style="background-image: url(<%= Faker::Avatar.image(@user.username) %>)" class="user-profile-pic-circular"></div>
+      <h3>created <%= @user.reviews.count %> reviews ● received <%= @user.upvoted_count %> upvotes ● has 35 followers </h3>
+  </div>
+</div>
 
-<p>
-  <strong>Username:</strong>
-  <%= @user.username %>
-</p>
+<div class="container episode-page-content">
+  <div class="row push-down-2">
+    <h2>Reviews</h2>
+    <div class="reviews col-md-8 col-md-offset-2">
+      <% @reviews.each do |review| %>
+        <div class="review review_<%= review.id %>">
+          <h3>
+            <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+            <% if upvote %>
+              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+              <script>
+                $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                  $.ajax({
+                      dataType: "script",
+                      url: "/upvotes/<%= upvote.id %>",
+                      type: "DELETE",
+                  })
+                });
+              </script>
+            <% else %>
+              <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+              <script type="text/javascript">
+                $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                  $.ajax({
+                      dataType: "script",
+                      url: "/upvotes",
+                      type: "POST",
+                      data: {
+                        upvote: {
+                         user_id: <%= current_user.id %>,
+                         review_id: <%= review.id %>,
+                        }}
+                  })
+                });
+                </script>
+            <% end %>
+            <%= review.user.username %>
+            <div class="user-stats">
+              <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
+              <div>created <%= review.user.reviews.count %> reviews</div>
+            </div>
+            <div class="rating-container-podcast">
+              <div></div>
+              <%# review.rating.times do %>
+                <!-- <i class="star-on-png"></i> -->
+              <%# end %>
+            </div>
+          </h3>
+          <p><%= review.contents %></p>
+        </div>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+      <% end %>
 
-<p>
-  <strong>Fname:</strong>
-  <%= @user.fname %>
-</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="pagination-container">
+      <%= paginate @reviews %>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Lname:</strong>
-  <%= @user.lname %>
-</p>
+<script>
+  <% @reviews.each do |review| %>
+    $('.review_<%= review.id %> .rating-container-podcast div').raty({
+      score: <%= review.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+  <% end %>
 
-<p>
-  <strong>Sex:</strong>
-  <%= @user.sex %>
-</p>
 
-<p>
-  <strong>Desc:</strong>
-  <%= @user.desc %>
-</p>
 
-<p>
-  <strong>Image url:</strong>
-  <%= @user.image_url %>
-</p>
 
-<p>
-  <strong>Age range:</strong>
-  <%= @user.age_range %>
-</p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+
+
+
+</script>
+
+
