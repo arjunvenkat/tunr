@@ -390,6 +390,17 @@ i.upvoted, i.not-upvoted {
 
 /* User page */
 
+.nav.nav-tabs li a {
+  padding-right: 92px;
+  border-bottom: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+
+  &:hover {
+    color: orange;
+  }
+}
+
 .user-page-heading {
   background-image: url(<%= asset_path 'tweed.png' %>);
   padding-bottom: 3%;
@@ -398,23 +409,23 @@ i.upvoted, i.not-upvoted {
 .user-page-heading .tagline {
   margin-top: none;
   color: white;
-  padding-bottom: 18px;
+  padding-bottom: 32px;
   font-size: 18px;
 }
 
-.user-page-heading h1{
+.user-page-heading h1 {
   font-size: 50px;
   color: orange;
-  padding-bottom: 0;
+  padding-bottom: 8px;
   border-bottom: none;
   margin-bottom: 0;
 }
 
-.user-page-heading h3{
+.user-page-heading h3 {
   font-size: 24px;
   color: white;
   padding-top: 12px;
-  padding-bottom: 0px;
+  padding-bottom: 12px;
 }
 
 .user-page-heading span{
@@ -438,3 +449,63 @@ i.upvoted, i.not-upvoted {
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
 }
 
+.user-page-content {
+  font-size: 2em;
+}
+
+.user-page-content h1 {
+  text-align: center;
+  border-bottom: none;
+}
+
+.user-page-content .review p {
+  font-size: 16px;
+  padding-bottom: 32px;
+}
+
+.user-page-content .nav {
+  font-size: 32px;
+  padding-bottom: 32px;
+}
+
+.following-message {
+  color: white;
+  font-size: 18px;
+}
+
+.user-list {
+  list-style-type: none;
+  padding-left: 0;
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: orange;
+  }
+
+  div.user-profile-pic-circular {
+    display: inline-block;
+    background: gray;
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    background-size: 90px;
+    background-position: 80% 50%;
+    border-width: 2px;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .username {
+    display: inline-block;
+    height: 100px;
+    vertical-align: middle;
+    padding-left: 14px;
+  }
+
+  li {
+    margin-bottom: -25px;
+  }
+}

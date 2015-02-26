@@ -2,70 +2,109 @@
   <div align ="center" class="container">
      <h1><%= @user.username %></h1>
      <div class="tagline"><%= @user.desc %></div>
-      <div style="background-image: url(<%= Faker::Avatar.image(@user.username) %>)" class="user-profile-pic-circular"></div>
+      <div style="background-image: url(<%= @user.image_url %>)" class="user-profile-pic-circular"></div>
       <h3>created <%= @user.reviews.count %> reviews ● received <%= @user.upvoted_count %> upvotes ● has <%= @user.followers.count %> followers </h3>
+      <div>
+        <% if current_user.follows.include? @user %>
+          <div class="following-message">You're following <%= @user.username %>!</div>
+        <% elsif current_user != @user %>
+          <%= form_tag("/followings", method: :post, remote: true) do %>
+            <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
+            <input type="hidden" name="following[followed_id]" value="<%= @user.id %>">
+            <button type="submit" class="follow btn btn-lg">Follow <%= @user.username %></button>
+          <% end %>
+        <% end %>
+      </div>
   </div>
 </div>
 
-<div class="container episode-page-content">
+<div class="container user-page-content">
   <div class="row push-down-2">
-    <h2>Reviews</h2>
     <div class="reviews col-md-8 col-md-offset-2">
-      <% @reviews.each do |review| %>
-        <div class="review review_<%= review.id %>">
-          <h3>
-            <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-            <% if upvote %>
-              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-              <script>
-                $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                  $.ajax({
-                      dataType: "script",
-                      url: "/upvotes/<%= upvote.id %>",
-                      type: "DELETE",
-                  })
-                });
-              </script>
-            <% else %>
-              <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-              <script type="text/javascript">
-                $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                  $.ajax({
-                      dataType: "script",
-                      url: "/upvotes",
-                      type: "POST",
-                      data: {
-                        upvote: {
-                         user_id: <%= current_user.id %>,
-                         review_id: <%= review.id %>,
-                        }}
-                  })
-                });
+      <ul class="nav nav-tabs">
+        <li role="presentation"><a href="?tab=reviews">Reviews</a></li>
+        <li role="presentation"><a href="?tab=follows">Follows</a></li>
+        <li role="presentation"><a href="?tab=followers">Followers</a></li>
+      </ul>
+      <% if params[:tab] == 'followers' %>
+        <ul class="user-list">
+        <% @user.followers.each do |follower| %>
+          <li>
+            <a href="<%= user_url(follower) %>">
+              <div style="background-image: url(<%= follower.image_url %>)"class="user-profile-pic-circular"></div>
+            </a>
+            <a class="username" href="<%= user_url(follower) %>"><%= follower.username %></a>
+          </li>
+        <% end %>
+        </ul>
+      <% elsif params[:tab] == 'follows'  %>
+        <ul class="user-list">
+          <% @user.follows.each do |followed| %>
+            <li>
+              <a href="<%= user_url(followed) %>">
+                <div style="background-image: url(<%= followed.image_url %>)"class="user-profile-pic-circular"></div>
+              </a>
+              <a class="username" href="<%= user_url(followed) %>"><%= followed.username %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <% @reviews.each do |review| %>
+          <div class="review review_<%= review.id %>">
+            <h3>
+              <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+              <% if upvote %>
+                <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                <script>
+                  $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                    $.ajax({
+                        dataType: "script",
+                        url: "/upvotes/<%= upvote.id %>",
+                        type: "DELETE",
+                    })
+                  });
                 </script>
-            <% end %>
-            <%= review.user.username %>
-            <div class="user-stats">
-              <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
-              <div>created <%= review.user.reviews.count %> reviews</div>
-            </div>
-            <div class="rating-container-podcast">
-              <div></div>
-              <%# review.rating.times do %>
-                <!-- <i class="star-on-png"></i> -->
-              <%# end %>
-            </div>
-          </h3>
-          <p><%= review.contents %></p>
-        </div>
+              <% else %>
+                <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                <script type="text/javascript">
+                  $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                    $.ajax({
+                        dataType: "script",
+                        url: "/upvotes",
+                        type: "POST",
+                        data: {
+                          upvote: {
+                           user_id: <%= current_user.id %>,
+                           review_id: <%= review.id %>,
+                          }}
+                    })
+                  });
+                  </script>
+              <% end %>
+              <%= review.user.username %>
+              <div class="user-stats">
+                <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
+                <div>created <%= review.user.reviews.count %> reviews</div>
+              </div>
+              <div class="rating-container-podcast">
+                <div></div>
+                <%# review.rating.times do %>
+                  <!-- <i class="star-on-png"></i> -->
+                <%# end %>
+              </div>
+            </h3>
+            <p><%= review.contents %></p>
+          </div>
 
+        <% end %>
+          <div class="pagination-container">
+            <%= paginate @reviews %>
+          </div>
       <% end %>
 
     </div>
   </div>
   <div class="row">
-    <div class="pagination-container">
-      <%= paginate @reviews %>
-    </div>
   </div>
 </div>
 

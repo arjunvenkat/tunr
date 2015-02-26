@@ -14,10 +14,10 @@ u1.username = "arjun_o_0"
 u1.fname = "Arjun"
 u1.lname = "Venkataswamy"
 u1.email = "a@a.com"
-u1.password = "12341234"
+u1.image_url = Faker::Avatar.image(u1.username)
 u1.desc = "he's just a guy"
+u1.password = "12341234"
 u1.password_confirmation = "12341234"
-u1.image_url = Faker::Avatar.image("my-own-slug")
 u1.save
 
 u2 = User.new
@@ -25,6 +25,7 @@ u2.username = "kwyjibo312"
 u2.fname = "Prashanth"
 u2.lname = "Venkataramanujam"
 u2.email = "p@p.com"
+u2.image_url = Faker::Avatar.image(u2.username)
 u2.desc = "Comedian. Writer. Polymath"
 u2.password = "12341234"
 u2.password_confirmation = "12341234"
@@ -37,6 +38,7 @@ u2.save
   u.lname = Faker::Name.last_name
   u.username = Faker::Internet.user_name
   u.email = Faker::Internet.safe_email(u.username)
+  u.image_url = Faker::Avatar.image(u.username)
   u.desc = Faker::Company.catch_phrase
   u.password = "12341234"
   u.password_confirmation = "12341234"
