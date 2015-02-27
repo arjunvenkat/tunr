@@ -62,7 +62,7 @@
                   <div></div>
                 </div>
               </h3>
-              <div><%= episode.podcast.name %></div>
+              <div><a href="<%= podcast_url(episode.podcast) %>"><%= episode.podcast.name %></a></div>
               <p><%= episode.desc %></p>
             </li>
           <% end %>
@@ -105,7 +105,7 @@
                 <div></div>
               </div>
             </h3>
-            <div><%= review.episode.podcast.name %></div>
+            <div><a href="<%= podcast_url(episode.podcast) %>"><%= episode.podcast.name %></a></div>
             <p><%= review.contents %></p>
           </div>
 

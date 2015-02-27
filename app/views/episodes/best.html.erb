@@ -7,7 +7,7 @@
         <div class="row episode_<%= episode.id %>">
           <div class="col-md-2 num"><%= index + 1 + (params[:page] ? (params[:page].to_i - 1)*15  : 0) %>.</div>
           <div class="col-md-3">
-            <a href="episode_page.html"><img src="<%= episode.podcast.image_url %>" alt="serial"></a>
+            <a href="<%= episode_url(episode) %>"><img src="<%= episode.podcast.image_url %>" alt="serial"></a>
           </div>
           <div class="col-md-7">
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a><br>

@@ -65,7 +65,7 @@
                 });
                 </script>
             <% end %>
-            <%= review.user.username %>
+            <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
             <div class="user-stats">
               <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
               <div>created <%= review.user.reviews.count %> reviews</div>
