@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  has_many :reviews
-  has_many :upvotes
+  has_many :reviews, dependent: :destroy
+  has_many :upvotes, dependent: :destroy
 
   def followers
     Following.where(followed_id: self.id).map { |following| following.follower }
