@@ -11,64 +11,69 @@
   <div class="row push-down-2">
     <div class='col-md-5'>
       <h2>Activity</h2>
-      <div class="row push-down-1">
-        <div class="col-md-12">
-          <ul class="review-list">
-            <% @recent_reviews.each do |review| %>
-              <li class="review review_<%= review.id %>">
-                <h3>
-                  <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-                  <% if upvote %>
-                    <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                    <script>
-                      $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                        $.ajax({
-                            dataType: "script",
-                            url: "/upvotes/<%= upvote.id %>",
-                            type: "DELETE",
-                        })
-                      });
-                    </script>
-                  <% else %>
-                    <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                    <script type="text/javascript">
-                      $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                        $.ajax({
-                            dataType: "script",
-                            url: "/upvotes",
-                            type: "POST",
-                            data: {
-                              upvote: {
-                               user_id: <%= current_user.id %>,
-                               review_id: <%= review.id %>,
-                              }}
-                        })
-                      });
+      <% if user_signed_in? %>
+        <div class="row push-down-1">
+          <div class="col-md-12">
+            <ul class="review-list">
+              <% @recent_reviews.each do |review| %>
+                <li class="review review_<%= review.id %>">
+                  <h3>
+                    <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                    <% if upvote %>
+                      <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                      <script>
+                        $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                          $.ajax({
+                              dataType: "script",
+                              url: "/upvotes/<%= upvote.id %>",
+                              type: "DELETE",
+                          })
+                        });
                       </script>
-                  <% end %>
-                  <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
-                  <div class="user-stats">
-                    <div class="user-upvote-num">
-                      reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
+                    <% else %>
+                      <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                      <script type="text/javascript">
+                        $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                          $.ajax({
+                              dataType: "script",
+                              url: "/upvotes",
+                              type: "POST",
+                              data: {
+                                upvote: {
+                                 user_id: <%= current_user.id %>,
+                                 review_id: <%= review.id %>,
+                                }}
+                          })
+                        });
+                        </script>
+                    <% end %>
+                    <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
+                    <div class="user-stats">
+                      <div class="user-upvote-num">
+                        reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
+                      </div>
+                      <div>
+                        <a href="<%= podcast_url(review.episode.podcast) %>">
+                          <%= review.episode.podcast.name %>
+                        </a>
+                      </div>
                     </div>
-                    <div>
-                      <a href="<%= podcast_url(review.episode.podcast) %>">
-                        <%= review.episode.podcast.name %>
-                      </a>
+                  </h3>
+                  <div>
+                    <div class="rating-container-podcast">
+                      <div></div>
                     </div>
                   </div>
-                </h3>
-                <div>
-                  <div class="rating-container-podcast">
-                    <div></div>
-                  </div>
-                </div>
-                <p><%= review.contents %></p>
-              </li>
-            <% end %>
-          </ul>
+                  <p><%= review.contents %></p>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <div>Go follow some people!</div>
+      <% end %>
+
     </div>
     <div class='col-md-6 col-md-offset-1'>
       <h2>Best of the week</h2>
@@ -100,13 +105,15 @@
 </div>
 
 <script type="text/javascript">
-  <% @recent_reviews.each do |review| %>
-    $('.review_<%= review.id %> .rating-container-podcast div').raty({
-      score: <%= review.rating %>,
-      path: 'assets',
-      readOnly: true,
-      starType: 'i'
-    });
+  <% if user_signed_in? %>
+    <% @recent_reviews.each do |review| %>
+      $('.review_<%= review.id %> .rating-container-podcast div').raty({
+        score: <%= review.rating %>,
+        path: 'assets',
+        readOnly: true,
+        starType: 'i'
+      });
+    <% end %>
   <% end %>
 
 </script>
