@@ -81,11 +81,7 @@
                   });
                   </script>
               <% end %>
-              <%= review.user.username %>
-              <div class="user-stats">
-                <div class="user-upvote-num">received <%= review.user.upvoted_count %> upvotes</div>
-                <div>created <%= review.user.reviews.count %> reviews</div>
-              </div>
+              <%= link_to review.episode.title, review.episode  %>
               <div class="rating-container-podcast">
                 <div></div>
                 <%# review.rating.times do %>
@@ -93,6 +89,7 @@
                 <%# end %>
               </div>
             </h3>
+            <div><%= review.episode.podcast.name %></div>
             <p><%= review.contents %></p>
           </div>
 
