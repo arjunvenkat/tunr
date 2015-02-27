@@ -8,30 +8,107 @@
 
 
 <div class="container">
-
-  <h3>Best of the week</h3>
   <div class="row push-down-2">
-    <% @episodes.each do |episode| %>
-      <div class="col-md-3">
-        <div class="ep-teaser">
-          <div class="image-container">
-            <a href="#"><img class="best-of-week" src="<%= episode.podcast.image_url %>" alt="<%= episode.podcast.name %>"></a>
-          </div>
-          <div class="teaser-text">
-            <div class="rating-container">
-              <div></div>
-            </div>
-            <h5><a href="<%= episode_url(episode) %>"><strong>Ep <%= episode.episode_num %>:</strong> <%= episode.title %></a></h5>
-            <p><%= truncate(episode.desc, length: 250) %></p>
-          </div>
+    <div class='col-md-5'>
+      <h2>Activity</h2>
+      <div class="row push-down-1">
+        <div class="col-md-12">
+          <ul class="review-list">
+            <% @recent_reviews.each do |review| %>
+              <li class="review review_<%= review.id %>">
+                <h3>
+                  <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                  <% if upvote %>
+                    <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                    <script>
+                      $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                        $.ajax({
+                            dataType: "script",
+                            url: "/upvotes/<%= upvote.id %>",
+                            type: "DELETE",
+                        })
+                      });
+                    </script>
+                  <% else %>
+                    <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                    <script type="text/javascript">
+                      $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                        $.ajax({
+                            dataType: "script",
+                            url: "/upvotes",
+                            type: "POST",
+                            data: {
+                              upvote: {
+                               user_id: <%= current_user.id %>,
+                               review_id: <%= review.id %>,
+                              }}
+                        })
+                      });
+                      </script>
+                  <% end %>
+                  <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
+                  <div class="user-stats">
+                    <div class="user-upvote-num">
+                      reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
+                    </div>
+                    <div>
+                      <a href="<%= podcast_url(review.episode.podcast) %>">
+                        <%= review.episode.podcast.name %>
+                      </a>
+                    </div>
+                  </div>
+                </h3>
+                <div>
+                  <div class="rating-container-podcast">
+                    <div></div>
+                  </div>
+                </div>
+                <p><%= review.contents %></p>
+              </li>
+            <% end %>
+          </ul>
         </div>
       </div>
-    <% end %>
+    </div>
+    <div class='col-md-6 col-md-offset-1'>
+      <h2>Best of the week</h2>
+      <div class="row push-down-2">
+        <% @episodes.each do |episode| %>
+          <div class="col-md-6">
+            <div class="ep-teaser">
+              <div class="image-container">
+                <a href="<%= episode_url(episode.id) %>"><img class="best-of-week" src="<%= episode.podcast.image_url %>" alt="<%= episode.podcast.name %>"></a>
+              </div>
+              <div class="teaser-text">
+                <div class="rating-container">
+                  <div></div>
+                </div>
+                <h5><a href="<%= episode_url(episode) %>"><strong>Ep <%= episode.episode_num %>:</strong> <%= episode.title %></a></h5>
+                <p><%= truncate(episode.desc, length: 250) %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="row">
+        <div class="big-link push-down-2"><a href="/podcasts">All podcasts</a></div>
+      </div>
+    </div>
   </div>
-  <div class="row">
-    <div class="big-link push-down-2"><a href="/podcasts">All podcasts</a></div>
-  </div>
+
+
 </div>
 
+<script type="text/javascript">
+  <% @recent_reviews.each do |review| %>
+    $('.review_<%= review.id %> .rating-container-podcast div').raty({
+      score: <%= review.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+  <% end %>
+
+</script>
 
 
