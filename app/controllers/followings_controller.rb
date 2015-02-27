@@ -30,6 +30,7 @@ class FollowingsController < ApplicationController
       if @following.save
         format.html { redirect_to @following, notice: 'Following was successfully created.' }
         format.json { render :show, status: :created, location: @following }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @following.errors, status: :unprocessable_entity }
@@ -54,10 +55,12 @@ class FollowingsController < ApplicationController
   # DELETE /followings/1
   # DELETE /followings/1.json
   def destroy
+    @user = @following.followed
     @following.destroy
     respond_to do |format|
       format.html { redirect_to followings_url, notice: 'Following was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 

@@ -1,0 +1,12 @@
+<% if current_user.follows.include? user %>
+  <div class="following-message">You're following <%= user.username %>!</div>
+  <% following = Following.where(followed_id: user.id, follower_id: current_user.id).first %>
+  <div class="unfollow"><a href="<%= following_url(following) %>" data-method="delete" data-remote="true">unfollow</a></div>
+
+<% elsif current_user != user %>
+  <%= form_tag("/followings", method: :post, remote: true) do %>
+    <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
+    <input type="hidden" name="following[followed_id]" value="<%= user.id %>">
+    <button type="submit" class="follow btn btn-lg">Follow <%= user.username %></button>
+  <% end %>
+<% end %>
