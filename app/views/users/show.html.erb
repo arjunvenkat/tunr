@@ -20,12 +20,17 @@
 
 <div class="container user-page-content">
   <div class="row push-down-2">
-    <div class="reviews col-md-8 col-md-offset-2">
-      <ul class="nav nav-tabs">
-        <li role="presentation"><a href="?tab=reviews">Reviews</a></li>
-        <li role="presentation"><a href="?tab=follows">Follows</a></li>
-        <li role="presentation"><a href="?tab=followers">Followers</a></li>
+    <div class="col-md-10 col-md-offset-1">
+      <ul class="tabs">
+        <li><a href="?tab=reviews">Reviews</a></li>
+        <li><a href="?tab=follows">Follows</a></li>
+        <li><a href="?tab=followers">Followers</a></li>
+        <li><a href="?tab=recommendations">Recommendations</a></li>
       </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="reviews col-md-8 col-md-offset-2">
       <% if params[:tab] == 'followers' %>
         <ul class="user-list">
         <% @user.followers.each do |follower| %>
@@ -45,6 +50,20 @@
                 <div style="background-image: url(<%= followed.image_url %>)"class="user-profile-pic-circular"></div>
               </a>
               <a class="username" href="<%= user_url(followed) %>"><%= followed.username %></a>
+            </li>
+          <% end %>
+        </ul>
+      <% elsif params[:tab] == 'recommendations' %>
+        <ul class="recommendation-list">
+          <% @recommendations.each do |episode| %>
+            <li class="recommendation episode_<%= episode.id %>">
+              <h3><%= link_to episode.title, episode  %>
+                <div class="rating-container-podcast">
+                  <div></div>
+                </div>
+              </h3>
+              <div><%= episode.podcast.name %></div>
+              <p><%= episode.desc %></p>
             </li>
           <% end %>
         </ul>
@@ -84,9 +103,6 @@
               <%= link_to review.episode.title, review.episode  %>
               <div class="rating-container-podcast">
                 <div></div>
-                <%# review.rating.times do %>
-                  <!-- <i class="star-on-png"></i> -->
-                <%# end %>
               </div>
             </h3>
             <div><%= review.episode.podcast.name %></div>
@@ -115,7 +131,14 @@
     });
   <% end %>
 
-
+  <% @recommendations.each do |episode| %>
+    $('.recommendation.episode_<%= episode.id %> .rating-container-podcast div').raty({
+      score: <%= episode.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+  <% end %>
 
 
 

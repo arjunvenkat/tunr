@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 
+# faciliates creating fake data
 gem 'faker'
+
 gem 'jquery-turbolinks'
 gem 'kaminari'
-# gem "font-awesome-rails"
+
 gem 'devise'
 gem 'mechanize'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

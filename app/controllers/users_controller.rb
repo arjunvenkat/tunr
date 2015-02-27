@@ -10,7 +10,16 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @reviews = @user.reviews.page params[:page]
+    @reviews = @user.reviews.order('created_at DESC').page params[:page]
+
+    lists_of_reviews = @user.follows.map do |followed|
+      followed.reviews.where('rating >= 4')
+    end
+    unsorted_reviews = lists_of_reviews.flatten
+    unsorted_episodes = unsorted_reviews.map {|review| review.episode }
+    already_listened_to = @user.reviews.map {|review| review.episode }
+    left_to_listen_to = (unsorted_episodes - already_listened_to).uniq
+    @recommendations = left_to_listen_to.sort_by { |episode| episode.rating }.reverse.take(10)
   end
 
   # GET /users/new

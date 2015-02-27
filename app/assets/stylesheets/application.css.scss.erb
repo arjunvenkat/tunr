@@ -353,7 +353,7 @@ h1 .small {
 i.upvoted, i.not-upvoted {
   cursor: pointer;
 }
-
+P
 .upvote-num {
   padding-left: 4px;
 }
@@ -396,14 +396,24 @@ i.upvoted, i.not-upvoted {
 /* User page */
 
 
-.nav.nav-tabs li a {
-  padding-right: 92px;
-  border-bottom: none;
-  box-shadow: none;
-  -webkit-box-shadow: none;
+.tabs {
+  list-style-type: none;
+  text-align: center;
+  font-size: 32px;
+  padding-bottom: 24px;
 
-  &:hover {
-    color: orange;
+  li {
+    display: inline-block;
+  }
+
+  li a {
+    padding-right: 48px;
+    border-bottom: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    &:hover {
+      color: orange;
+    }
   }
 }
 
@@ -513,5 +523,14 @@ i.upvoted, i.not-upvoted {
 
   li {
     margin-bottom: -25px;
+  }
+}
+
+.recommendation-list {
+  list-style-type: none;
+  padding-left: 0;
+
+  li {
+    padding-bottom: 14px;
   }
 }
