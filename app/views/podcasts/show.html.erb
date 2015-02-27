@@ -10,15 +10,15 @@
     <div class="rating-container-orange">
       <div></div>
     </div>
-    <div class="col-md-8 col-md-offset-2 push-down-1 desc">
+    <div class="col-md-12 push-down-1 desc">
       <h1><%= @podcast.name %></h1>
       <p><%= @podcast.desc %></p>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row push-down-2">
+    <h2>Episodes</h2>
     <div class="col-md-8 col-md-offset-2 push-down-2 ep-container">
-      <h2>Episodes</h2>
       <div class="pagination-container">
         <%= paginate @episodes %>
       </div>
