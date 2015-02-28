@@ -22,12 +22,16 @@
 
 <div class="container user-page-content">
   <div class="row push-down-2">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
       <ul class="tabs">
-        <li><a href="?tab=reviews">Reviews</a></li>
+        <li><a href="?tab=reviews">
+          <%= @user == current_user ? 'Your ' : "#{@user.username}'s " %>Reviews
+        </a></li>
         <li><a href="?tab=follows">Follows</a></li>
         <li><a href="?tab=followers">Followers</a></li>
-        <li><a href="?tab=recommendations">Recommendations</a></li>
+        <% if @user == current_user %>
+          <li><a href="?tab=recommendations">Recommended for you</a></li>
+        <% end %>
       </ul>
     </div>
   </div>

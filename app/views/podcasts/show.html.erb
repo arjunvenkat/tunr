@@ -26,6 +26,7 @@
         <% @episodes.each do |episode| %>
           <li class="episode_<%= episode.id %> episode">
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
+            <div><strong>published <%= (episode.published_date.strftime("%B %Y")) %></strong></div>
             <p><%= truncate episode.desc, length: 200 %></p>
           </li>
         <% end %>
