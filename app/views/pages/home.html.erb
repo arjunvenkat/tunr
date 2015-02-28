@@ -11,13 +11,13 @@
   <div class="row push-down-2">
     <div class='col-md-5'>
       <h2>Activity</h2>
-      <% if user_signed_in? %>
-        <div class="row push-down-1">
-          <div class="col-md-12">
-            <ul class="review-list">
-              <% @recent_reviews.each do |review| %>
-                <li class="review review_<%= review.id %>">
-                  <h3>
+      <div class="row push-down-1">
+        <div class="col-md-12">
+          <ul class="review-list">
+            <% @recent_reviews.each do |review| %>
+              <li class="review review_<%= review.id %>">
+                <h3>
+                  <% if user_signed_in? %>
                     <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
                     <% if upvote %>
                       <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
@@ -47,33 +47,34 @@
                         });
                         </script>
                     <% end %>
-                    <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
-                    <div class="user-stats">
-                      <div class="user-upvote-num">
-                        reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
-                      </div>
-                      <div>
-                        <a href="<%= podcast_url(review.episode.podcast) %>">
-                          <%= review.episode.podcast.name %>
-                        </a>
-                      </div>
-                    </div>
-                  </h3>
-                  <div>
-                    <div class="rating-container-podcast">
-                      <div></div>
-                    </div>
-                  </div>
-                  <p><%= review.contents %></p>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      <% else %>
-        <div>Go follow some people!</div>
-      <% end %>
 
+                  <% else %>
+                    <i class="fa fa-thumbs-o-up"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                  <% end %>
+                  <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
+                </h3>
+                <div class="user-stats">
+                  <div class="user-upvote-num">
+                    reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
+                    <%= time_ago_in_words(review.created_at) %> ago
+                  </div>
+                  <div>
+                    <a href="<%= podcast_url(review.episode.podcast) %>">
+                      <%= review.episode.podcast.name %>
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <div class="rating-container-podcast">
+                    <div></div>
+                  </div>
+                </div>
+                <p><%= review.contents %></p>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class='col-md-6 col-md-offset-1'>
       <h2>Best of the week</h2>
@@ -96,7 +97,7 @@
         <% end %>
       </div>
       <div class="row">
-        <div class="big-link push-down-2"><a href="/podcasts">All podcasts</a></div>
+        <div class="big-link push-down-2"><a href="/podcasts">See all podcasts</a></div>
       </div>
     </div>
   </div>
@@ -105,15 +106,13 @@
 </div>
 
 <script type="text/javascript">
-  <% if user_signed_in? %>
-    <% @recent_reviews.each do |review| %>
-      $('.review_<%= review.id %> .rating-container-podcast div').raty({
-        score: <%= review.rating %>,
-        path: 'assets',
-        readOnly: true,
-        starType: 'i'
-      });
-    <% end %>
+  <% @recent_reviews.each do |review| %>
+    $('.review_<%= review.id %> .rating-container-podcast div').raty({
+      score: <%= review.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
   <% end %>
 
 </script>

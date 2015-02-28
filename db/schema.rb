@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225230549) do
+ActiveRecord::Schema.define(version: 20150228001335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,9 +56,9 @@ ActiveRecord::Schema.define(version: 20150225230549) do
     t.integer  "episode_id"
     t.integer  "rating"
     t.text     "contents"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "upvoted_count"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "upvoted_count", default: 0
   end
 
   create_table "upvotes", force: :cascade do |t|
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20150225230549) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "upvoted_count"
+    t.integer  "upvoted_count",          default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
