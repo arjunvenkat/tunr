@@ -6,6 +6,7 @@
       <div class="col-md-3">
         <div class="ep-list-item">
           <a href="<%= podcast_url(podcast) %>"><img class="best-of-week" src="<%= podcast.image_url %>" alt="<%= podcast.name %>"></a>
+          <p><%= truncate(podcast.desc, length: 300) %></p>
         </div>
       </div>
     <% end %>
