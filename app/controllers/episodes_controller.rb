@@ -1,5 +1,6 @@
 class EpisodesController < ApplicationController
   before_action :set_episode, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show, :best]
 
   # GET /episodes
   # GET /episodes.json

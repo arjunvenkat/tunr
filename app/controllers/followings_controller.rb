@@ -1,5 +1,6 @@
 class FollowingsController < ApplicationController
   before_action :set_following, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /followings
   # GET /followings.json

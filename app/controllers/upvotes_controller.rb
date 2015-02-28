@@ -1,6 +1,8 @@
 class UpvotesController < ApplicationController
   before_action :set_upvote, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!
+
   # GET /upvotes
   # GET /upvotes.json
   def index

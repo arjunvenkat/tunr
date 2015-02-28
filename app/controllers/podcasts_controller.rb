@@ -1,6 +1,8 @@
 class PodcastsController < ApplicationController
   before_action :set_podcast, only: [:show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!, except: [:index, :show]
+
   # GET /podcasts
   # GET /podcasts.json
   def index

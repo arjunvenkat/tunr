@@ -11,7 +11,7 @@
         <%= @episode.episode_num %> - <%= @episode.title %>
       </a>
     </h1>
-    <% if Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+    <% if user_signed_in? && Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
       <div class="rating-container-big orange">
         <div></div>
       </div>
@@ -36,34 +36,38 @@
       <% @reviews.each do |review| %>
         <div class="review review_<%= review.id %>">
           <h3>
-            <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-            <% if upvote %>
-              <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-              <script>
-                $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                  $.ajax({
-                      dataType: "script",
-                      url: "/upvotes/<%= upvote.id %>",
-                      type: "DELETE",
-                  })
-                });
-              </script>
+            <% if user_signed_in? %>
+              <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+              <% if upvote %>
+                <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                <script>
+                  $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                    $.ajax({
+                        dataType: "script",
+                        url: "/upvotes/<%= upvote.id %>",
+                        type: "DELETE",
+                    })
+                  });
+                </script>
+              <% else %>
+                <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                <script type="text/javascript">
+                  $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                    $.ajax({
+                        dataType: "script",
+                        url: "/upvotes",
+                        type: "POST",
+                        data: {
+                          upvote: {
+                           user_id: <%= current_user.id %>,
+                           review_id: <%= review.id %>,
+                          }}
+                    })
+                  });
+                  </script>
+              <% end %>
             <% else %>
               <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-              <script type="text/javascript">
-                $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                  $.ajax({
-                      dataType: "script",
-                      url: "/upvotes",
-                      type: "POST",
-                      data: {
-                        upvote: {
-                         user_id: <%= current_user.id %>,
-                         review_id: <%= review.id %>,
-                        }}
-                  })
-                });
-                </script>
             <% end %>
             <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
             <div class="user-stats">
@@ -107,6 +111,7 @@
     starType: 'i'
   });
 
+<% if user_signed_in? %>
   $('.rating-container-big div i').click(function(){
     var rating = $(this).attr('data-alt');
     $.ajax({
@@ -122,6 +127,7 @@
           }}
     })
   });
+<% end %>
 
 
 
