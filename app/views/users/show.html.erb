@@ -4,7 +4,7 @@
      <div class="tagline"><%= @user.desc %></div>
       <div style="background-image: url(<%= @user.image_url %>)" class="user-profile-pic-circular"></div>
       <h3>created <%= @user.reviews.count %> reviews ● received <%= @user.upvoted_count %> upvotes ● has <%= @user.followers.count %> followers </h3>
-      <div class="follow-status">
+      <div class="follow-status user_<%= @user.id %>">
         <% if current_user.follows.include? @user %>
           <div class="following-message">You're following <%= @user.username %>!</div>
           <% following = Following.where(followed_id: @user.id, follower_id: current_user.id).first %>
@@ -13,7 +13,7 @@
           <%= form_tag("/followings", method: :post, remote: true) do %>
             <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
             <input type="hidden" name="following[followed_id]" value="<%= @user.id %>">
-            <button type="submit" class="follow btn btn-lg">Follow <%= @user.username %></button>
+            <button type="submit" class="follow btn btn-default">Follow <%= @user.username %></button>
           <% end %>
         <% end %>
       </div>

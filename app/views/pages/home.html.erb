@@ -13,66 +13,101 @@
       <h2>Activity</h2>
       <div class="row push-down-1">
         <div class="col-md-12">
-          <ul class="review-list">
-            <% @recent_reviews.each do |review| %>
-              <li class="review review_<%= review.id %>">
-                <h3>
-                  <% if user_signed_in? %>
-                    <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-                    <% if upvote %>
-                      <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                      <script>
-                        $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                          $.ajax({
-                              dataType: "script",
-                              url: "/upvotes/<%= upvote.id %>",
-                              type: "DELETE",
-                          })
-                        });
-                      </script>
-                    <% else %>
-                      <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                      <script type="text/javascript">
-                        $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                          $.ajax({
-                              dataType: "script",
-                              url: "/upvotes",
-                              type: "POST",
-                              data: {
-                                upvote: {
-                                 user_id: <%= current_user.id %>,
-                                 review_id: <%= review.id %>,
-                                }}
-                          })
-                        });
+          <% if @recent_reviews.present? %>
+            <ul class="review-list">
+              <% @recent_reviews.each do |review| %>
+                <li class="review review_<%= review.id %>">
+                  <h3>
+                    <% if user_signed_in? %>
+                      <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                      <% if upvote %>
+                        <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                        <script>
+                          $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                            $.ajax({
+                                dataType: "script",
+                                url: "/upvotes/<%= upvote.id %>",
+                                type: "DELETE",
+                            })
+                          });
                         </script>
-                    <% end %>
+                      <% else %>
+                        <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                        <script type="text/javascript">
+                          $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                            $.ajax({
+                                dataType: "script",
+                                url: "/upvotes",
+                                type: "POST",
+                                data: {
+                                  upvote: {
+                                   user_id: <%= current_user.id %>,
+                                   review_id: <%= review.id %>,
+                                  }}
+                            })
+                          });
+                          </script>
+                      <% end %>
 
-                  <% else %>
-                    <i class="fa fa-thumbs-o-up"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                  <% end %>
-                  <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
-                </h3>
-                <div class="user-stats">
-                  <div class="user-upvote-num">
-                    reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
-                    <%= time_ago_in_words(review.created_at) %> ago
+                    <% else %>
+                      <i class="fa fa-thumbs-o-up"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                    <% end %>
+                    <a href="<%= episode_url(review.episode) %>"><%= review.episode.title %></a>
+                  </h3>
+                  <div class="user-stats">
+                    <div class="user-upvote-num">
+                      reviewed by <a href="<%= user_url(review.user) %>"><%= review.user.username %></a>
+                      <%= time_ago_in_words(review.created_at) %> ago
+                    </div>
+                    <div>
+                      <a href="<%= podcast_url(review.episode.podcast) %>">
+                        <%= review.episode.podcast.name %>
+                      </a>
+                    </div>
                   </div>
                   <div>
-                    <a href="<%= podcast_url(review.episode.podcast) %>">
-                      <%= review.episode.podcast.name %>
+                    <div class="rating-container-podcast">
+                      <div></div>
+                    </div>
+                  </div>
+                  <p><%= review.contents %></p>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <div class="follow-suggestions">
+              <div class="heading">You're not following anyone yet! How about some of these interesting folks?</div>
+              <ul class="users-to-follow user-list">
+                <% User.order('upvoted_count DESC').limit(8).each do |user| %>
+                  <li>
+                    <a href="<%= user_url(user) %>">
+                      <div style="background-image: url(<%= user.image_url %>)"class="user-profile-pic-circular"></div>
                     </a>
-                  </div>
-                </div>
-                <div>
-                  <div class="rating-container-podcast">
-                    <div></div>
-                  </div>
-                </div>
-                <p><%= review.contents %></p>
-              </li>
-            <% end %>
-          </ul>
+                    <div class="user-info">
+                      <h3><a href="<%= user_url(user) %>"><%= user.username %></a> <small><%= user.upvoted_count %> upvotes</small></h3>
+                      <p><%= user.desc %></p>
+                      <div class="follow-status user_<%= user.id %>">
+                        <% if current_user.follows.include? user %>
+                          <div class="following-message">You're following <%= user.username %>!</div>
+                          <% following = Following.where(followed_id: user.id, follower_id: current_user.id).first %>
+                          <div class="unfollow"><a href="<%= following_url(following) %>" data-method="delete" data-remote="true">unfollow</a></div>
+                        <% elsif current_user != user %>
+                          <%= form_tag("/followings", method: :post, remote: true) do %>
+                            <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
+                            <input type="hidden" name="following[followed_id]" value="<%= user.id %>">
+                            <button type="submit" class="follow btn btn-default">Follow <%= user.username %></button>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+
+
+
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

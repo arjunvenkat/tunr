@@ -1,1 +1,3 @@
-$('.follow-status').html('<%= j(render('follow_status', :user => @following.followed )) %>')
+
+$('.follow-status.user_<%= @following.followed.id %>').html('<%= j(render('follow_status', :user => @following.followed )) %>');
+

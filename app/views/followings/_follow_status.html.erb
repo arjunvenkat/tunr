@@ -7,6 +7,6 @@
   <%= form_tag("/followings", method: :post, remote: true) do %>
     <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
     <input type="hidden" name="following[followed_id]" value="<%= user.id %>">
-    <button type="submit" class="follow btn btn-lg">Follow <%= user.username %></button>
+    <button type="submit" class="follow btn btn-default">Follow <%= user.username %></button>
   <% end %>
 <% end %>
