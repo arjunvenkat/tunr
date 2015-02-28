@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <h1>Sign in <span class="small"><a href="/users/sign_up">or sign up</a></span></h1>
+      <h1>Sign in</h1>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-horizontal push-down-2"}) do |f| %>
         <%= devise_error_messages! %>
@@ -36,7 +36,11 @@
           </div>
         </div>
       <% end %>
-
+        <div class="row">
+          <div class="col-md-6 col-md-offset-2">
+            <h4>Or <a href="/users/sign_up"> sign up</a></h4>
+          </div>
+        </div>
     </div>
   </div>
 </div>
