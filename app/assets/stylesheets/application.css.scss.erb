@@ -71,11 +71,8 @@ a {
   color: rgba(255,140, 0, 0.7);
 }
 
-a:focus {
-  color: orange;
-}
 
-a:hover {
+a:hover, a:focus  {
   color: rgba(255,140, 0, 1);
   text-decoration: none;
 }
@@ -299,18 +296,6 @@ h1 .small {
   padding-right: 5px;
 }
 
-/*.pagination > li:first-child > a, .pagination > li:last-child > a, .pagination > li > a  {
-  border: none;
-  color: orange;
-  font-size: 2em;
-}
-
-.pagination > li > a:hover, .pagination > li > a:focus {
-  background: none;
-  color: orange;
-}*/
-
-
 
 /* Podcast page */
 
@@ -478,7 +463,7 @@ i.upvoted, i.not-upvoted {
 .tabs {
   list-style-type: none;
   text-align: center;
-  font-size: 32px;
+  // font-size: 32px;
   padding-bottom: 24px;
 
   li {
@@ -490,9 +475,7 @@ i.upvoted, i.not-upvoted {
     padding-bottom: 8px;
     box-shadow: none;
     -webkit-box-shadow: none;
-    &:hover {
-      color: orange;
-    }
+    font-size: 28px;
   }
 
   .active {
@@ -579,6 +562,10 @@ i.upvoted, i.not-upvoted {
 .unfollow {
   color: white;
   font-size: 14px;
+
+  a {
+    font-size: 18px;
+  }
 }
 
 .user-list {

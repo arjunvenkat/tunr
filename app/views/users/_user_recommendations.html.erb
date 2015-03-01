@@ -1,0 +1,13 @@
+<ul class="recommendation-list">
+  <% recommendations.each do |episode| %>
+    <li class="recommendation episode_<%= episode.id %>">
+      <h3><%= link_to episode.title, episode  %>
+        <div class="rating-container-podcast">
+          <div></div>
+        </div>
+      </h3>
+      <div><a href="<%= podcast_url(episode.podcast) %>"><%= episode.podcast.name %></a></div>
+      <p><%= episode.desc %></p>
+    </li>
+  <% end %>
+</ul>

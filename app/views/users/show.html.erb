@@ -24,19 +24,20 @@
   <div class="row push-down-2">
     <div class="col-md-12">
       <ul class="tabs">
-        <li><a href="?tab=reviews">
+        <li><a href="?tab=reviews" class="reviews-link active" data-remote='true'>
           <%= @user == current_user ? 'Your ' : "#{@user.username}'s " %>Reviews
         </a></li>
-        <li><a href="?tab=follows">Follows</a></li>
-        <li><a href="?tab=followers">Followers</a></li>
+        <li><a href="?tab=follows" class="follows-link" data-remote='true'>Follows</a></li>
+        <li><a href="?tab=followers" class="followers-link" data-remote='true'>Followers</a></li>
         <% if @user == current_user %>
-          <li><a href="?tab=recommendations">Recommended for you</a></li>
+          <li><a href="?tab=recommendations" class="recommendations-link" data-remote='true'>Recommended for you</a></li>
         <% end %>
       </ul>
     </div>
   </div>
   <div class="row">
-    <div class="reviews col-md-8 col-md-offset-2">
+    <div class="user-sub-content col-md-8 col-md-offset-2">
+
       <% if params[:tab] == 'followers' %>
         <ul class="user-list">
         <% @user.followers.each do |follower| %>
@@ -48,6 +49,7 @@
           </li>
         <% end %>
         </ul>
+
       <% elsif params[:tab] == 'follows'  %>
         <ul class="user-list">
           <% @user.follows.each do |followed| %>
@@ -74,51 +76,55 @@
           <% end %>
         </ul>
       <% else %>
-        <% @reviews.each do |review| %>
-          <div class="review review_<%= review.id %>">
-            <h3>
-              <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-              <% if upvote %>
-                <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                <script>
-                  $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                    $.ajax({
-                        dataType: "script",
-                        url: "/upvotes/<%= upvote.id %>",
-                        type: "DELETE",
-                    })
-                  });
-                </script>
-              <% else %>
-                <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                <script type="text/javascript">
-                  $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                    $.ajax({
-                        dataType: "script",
-                        url: "/upvotes",
-                        type: "POST",
-                        data: {
-                          upvote: {
-                           user_id: <%= current_user.id %>,
-                           review_id: <%= review.id %>,
-                          }}
-                    })
-                  });
-                  </script>
-              <% end %>
-              <%= link_to review.episode.title, review.episode  %>
-              <div class="rating-container-podcast">
-                <div></div>
-              </div>
-            </h3>
-            <div><a href="<%= podcast_url(review.episode.podcast) %>"><%= review.episode.podcast.name %></a></div>
-            <p><%= review.contents %></p>
-          </div>
+        <div class="reviews">
+          <% @reviews.each do |review| %>
+            <div class="review review_<%= review.id %>">
+              <h3>
+                <% unless current_user == @user %>
+                  <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                  <% if upvote %>
+                    <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                    <script>
+                      $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                        $.ajax({
+                            dataType: "script",
+                            url: "/upvotes/<%= upvote.id %>",
+                            type: "DELETE",
+                        })
+                      });
+                    </script>
+                  <% else %>
+                    <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                    <script type="text/javascript">
+                      $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                        $.ajax({
+                            dataType: "script",
+                            url: "/upvotes",
+                            type: "POST",
+                            data: {
+                              upvote: {
+                               user_id: <%= current_user.id %>,
+                               review_id: <%= review.id %>,
+                              }}
+                        })
+                      });
+                      </script>
+                  <% end %>
 
-        <% end %>
-          <div class="pagination-container">
-            <%= paginate @reviews %>
-          </div>
+                <% end %>
+                <%= link_to review.episode.title, review.episode  %>
+                <div class="rating-container-podcast">
+                  <div></div>
+                </div>
+              </h3>
+              <div><a href="<%= podcast_url(review.episode.podcast) %>"><%= review.episode.podcast.name %></a></div>
+              <p><%= review.contents %></p>
+            </div>
+          <% end %>
+        </div>
+        <div class="pagination-container">
+          <%= paginate @reviews %>
+        </div>
       <% end %>
 
     </div>

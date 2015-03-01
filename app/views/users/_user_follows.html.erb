@@ -1,0 +1,10 @@
+<ul class="user-list">
+  <% user.follows.each do |followed| %>
+    <li>
+      <a href="<%= user_url(followed) %>">
+        <div style="background-image: url(<%= followed.image_url %>)"class="user-profile-pic-circular"></div>
+      </a>
+      <a class="username" href="<%= user_url(followed) %>"><%= followed.username %></a>
+    </li>
+  <% end %>
+</ul>

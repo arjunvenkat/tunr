@@ -1,0 +1,23 @@
+$('.reviews-link, .follows-link, .followers-link, .recommendations-link').removeClass('active');
+<% if params[:tab] == "reviews" %>
+  $('.reviews-link').addClass('active');
+  $('.user-sub-content').html("<%= j(render('user_reviews', :reviews => @reviews)) %>");
+  <% @reviews.each do |review| %>
+    $('.review_<%= review.id %> .rating-container-podcast div').raty({
+      score: <%= review.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+  <% end %>
+<% elsif params[:tab] == 'followers' %>
+  $('.followers-link').addClass('active');
+  $('.user-sub-content').html("<%= j(render('user_followers', :user => @user)) %>");
+<% elsif params[:tab] == 'follows' %>
+  $('.follows-link').addClass('active');
+  $('.user-sub-content').html("<%= j(render('user_follows', :user => @user)) %>");
+<% elsif params[:tab] == 'recommendations' %>
+  $('.recommendations-link').addClass('active');
+  $('.user-sub-content').html("<%= j(render('user_recommendations', :recommendations => @recommendations)) %>");
+<% end %>
+
