@@ -19,5 +19,13 @@ $('.reviews-link, .follows-link, .followers-link, .recommendations-link').remove
 <% elsif params[:tab] == 'recommendations' %>
   $('.recommendations-link').addClass('active');
   $('.user-sub-content').html("<%= j(render('user_recommendations', :recommendations => @recommendations)) %>");
+  <% @recommendations.each do |episode| %>
+    $('.recommendation.episode_<%= episode.id %> .rating-container-podcast div').raty({
+      score: <%= episode.rating %>,
+      path: 'assets',
+      readOnly: true,
+      starType: 'i'
+    });
+  <% end %>
 <% end %>
 

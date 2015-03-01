@@ -37,97 +37,56 @@
   </div>
   <div class="row">
     <div class="user-sub-content col-md-8 col-md-offset-2">
-
-      <% if params[:tab] == 'followers' %>
-        <ul class="user-list">
-        <% @user.followers.each do |follower| %>
-          <li>
-            <a href="<%= user_url(follower) %>">
-              <div style="background-image: url(<%= follower.image_url %>)"class="user-profile-pic-circular"></div>
-            </a>
-            <a class="username" href="<%= user_url(follower) %>"><%= follower.username %></a>
-          </li>
-        <% end %>
-        </ul>
-
-      <% elsif params[:tab] == 'follows'  %>
-        <ul class="user-list">
-          <% @user.follows.each do |followed| %>
-            <li>
-              <a href="<%= user_url(followed) %>">
-                <div style="background-image: url(<%= followed.image_url %>)"class="user-profile-pic-circular"></div>
-              </a>
-              <a class="username" href="<%= user_url(followed) %>"><%= followed.username %></a>
-            </li>
-          <% end %>
-        </ul>
-      <% elsif params[:tab] == 'recommendations' %>
-        <ul class="recommendation-list">
-          <% @recommendations.each do |episode| %>
-            <li class="recommendation episode_<%= episode.id %>">
-              <h3><%= link_to episode.title, episode  %>
-                <div class="rating-container-podcast">
-                  <div></div>
-                </div>
-              </h3>
-              <div><a href="<%= podcast_url(episode.podcast) %>"><%= episode.podcast.name %></a></div>
-              <p><%= episode.desc %></p>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <div class="reviews">
-          <% @reviews.each do |review| %>
-            <div class="review review_<%= review.id %>">
-              <h3>
-                <a href="<%= episode_url(review.episode) %>"><img src="<%= review.episode.podcast.image_url %>" class="pod-icon"></a>
-                <% unless current_user == @user %>
-                  <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-                  <% if upvote %>
-                    <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                    <script>
-                      $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                        $.ajax({
-                            dataType: "script",
-                            url: "/upvotes/<%= upvote.id %>",
-                            type: "DELETE",
-                        })
-                      });
+      <div class="reviews">
+        <% @reviews.each do |review| %>
+          <div class="review review_<%= review.id %>">
+            <h3>
+              <a href="<%= episode_url(review.episode) %>"><img src="<%= review.episode.podcast.image_url %>" class="pod-icon"></a>
+              <% unless current_user == @user %>
+                <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                <% if upvote %>
+                  <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                  <script>
+                    $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                      $.ajax({
+                          dataType: "script",
+                          url: "/upvotes/<%= upvote.id %>",
+                          type: "DELETE",
+                      })
+                    });
+                  </script>
+                <% else %>
+                  <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                  <script type="text/javascript">
+                    $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                      $.ajax({
+                          dataType: "script",
+                          url: "/upvotes",
+                          type: "POST",
+                          data: {
+                            upvote: {
+                             user_id: <%= current_user.id %>,
+                             review_id: <%= review.id %>,
+                            }}
+                      })
+                    });
                     </script>
-                  <% else %>
-                    <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                    <script type="text/javascript">
-                      $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                        $.ajax({
-                            dataType: "script",
-                            url: "/upvotes",
-                            type: "POST",
-                            data: {
-                              upvote: {
-                               user_id: <%= current_user.id %>,
-                               review_id: <%= review.id %>,
-                              }}
-                        })
-                      });
-                      </script>
-                  <% end %>
-
                 <% end %>
-                <%= link_to review.episode.title, review.episode  %>
-                <div class="rating-container-podcast">
-                  <div></div>
-                </div>
-              </h3>
-              <div><a href="<%= podcast_url(review.episode.podcast) %>"><%= review.episode.podcast.name %></a></div>
-              <p><%= review.contents %></p>
-            </div>
-          <% end %>
-        </div>
-        <div class="pagination-container">
-          <%= paginate @reviews %>
-        </div>
-      <% end %>
 
+              <% end %>
+              <%= link_to review.episode.title, review.episode  %>
+              <div class="rating-container-podcast">
+                <div></div>
+              </div>
+            </h3>
+            <div><a href="<%= podcast_url(review.episode.podcast) %>"><%= review.episode.podcast.name %></a></div>
+            <p><%= review.contents %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class="pagination-container">
+        <%= paginate @reviews %>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -144,14 +103,7 @@
     });
   <% end %>
 
-  <% @recommendations.each do |episode| %>
-    $('.recommendation.episode_<%= episode.id %> .rating-container-podcast div').raty({
-      score: <%= episode.rating %>,
-      path: 'assets',
-      readOnly: true,
-      starType: 'i'
-    });
-  <% end %>
+
 
 
 
