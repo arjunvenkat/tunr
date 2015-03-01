@@ -20,10 +20,13 @@ class EpisodesController < ApplicationController
   # GET /episodes/1.json
   def show
 
+    @recent_reviews = @episode
+                        .reviews
+                        .order('created_at DESC').limit(10)
+
     @reviews = @episode
                   .reviews
                   .order('upvoted_count DESC')
-                  .order('created_at DESC')
                   .page params[:page]
   end
 

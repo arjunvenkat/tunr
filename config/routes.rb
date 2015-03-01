@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users
 
-  resources :reviews do
-    get :from_episode, on: :new
-  end
+  resources :reviews
+  get "/reviews/new/from_episode" => "reviews#new_from_episode", as: :new_from_episode
+  get "/reviews/edit/from_episode" => "reviews#edit_from_episode", as: :edit_from_episode
 
   resources :podcasts
 

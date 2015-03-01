@@ -1,0 +1,54 @@
+<div class="container push-down-2 new-rating-page">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+
+      <h3>What did you think about <%= @episode.title %>?</h3>
+      <h4>Episode <%= @episode.episode_num %> of <%= @episode.podcast.name %></h4>
+
+      <%= form_for(@episode.reviews.build) do |f| %>
+        <% if @review.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
+            <ul>
+            <% @review.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="rating-container-big push-down-1">
+          <div></div>
+        </div>
+        <div class="field">
+          <%= f.hidden_field :episode_id, value: params[:episode_id] %>
+        </div>
+
+        <div class="form-group push-down-1">
+          <%= f.label :contents, class: "sr-only" %>
+          <div class="col-md-8 col-md-offset-2">
+            <%= f.text_area :contents, class: "form-control", placeholder: "Write your thoughts here", rows: 5 %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10 push-down-1">
+            <%= f.submit value: "Share thoughts", class: "btn btn-default" %>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $('.rating-container-big div').raty({
+    score: 0,
+    path: 'assets',
+    scoreName: 'review[rating]',
+    scoreId: 'review_rating',
+    starType: 'i'
+  });
+</script>

@@ -19,9 +19,14 @@ class ReviewsController < ApplicationController
     @review = Review.new
   end
 
-  def from_episode
+  def new_from_episode
     @review = Review.new
     @episode = Episode.find(params[:episode_id])
+  end
+
+  def edit_from_episode
+    @review = Review.find(params[:review_id])
+    @episode = @review.episode
   end
 
   # GET /reviews/1/edit
@@ -52,7 +57,7 @@ class ReviewsController < ApplicationController
     @review.user_id = current_user.id
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to @review, notice: 'Review was successfully updated.' }
+        format.html { redirect_to @review.episode, notice: 'Review was successfully updated.' }
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :edit }

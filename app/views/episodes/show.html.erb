@@ -26,7 +26,12 @@
   </div>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <div><a href="/reviews/new/from_episode?episode_id=<%= @episode.id %>">Create a review</a></div>
+      <% review = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+      <% if review %>
+        <div><a href="/reviews/edit/from_episode?review_id=<%=review.id %>&episode_id=<%=@episode.id %>">Edit your thoughts on <%= @episode.title %></a></div>
+      <% else %>
+        <div><a href="/reviews/new/from_episode?episode_id=<%= @episode.id %>">Share your thoughts on <%= @episode.title %></a></div>
+      <% end %>
     </div>
   </div>
 

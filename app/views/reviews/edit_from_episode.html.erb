@@ -2,9 +2,10 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
 
-      <h3>New Review for Episode <%= @episode.episode_num %> of <br> <%= @episode.podcast.name %></h3>
+      <h3>What did you think about <%= @episode.title %>?</h3>
+      <h4>Episode <%= @episode.episode_num %> of <%= @episode.podcast.name %></h4>
 
-      <%= form_for(@episode.reviews.build) do |f| %>
+      <%= form_for(@review) do |f| %>
         <% if @review.errors.any? %>
           <div id="error_explanation">
             <h2><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h2>
@@ -27,12 +28,12 @@
         <div class="form-group push-down-1">
           <%= f.label :contents, class: "sr-only" %>
           <div class="col-md-8 col-md-offset-2">
-            <%= f.text_area :contents, class: "form-control", placeholder: "Write your review here", rows: 5 %>
+            <%= f.text_area :contents, class: "form-control", placeholder: "Write your thoughts here", rows: 5 %>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10 push-down-1">
-            <%= f.submit class: "btn btn-default" %>
+            <%= f.submit value: "Update thoughts", class: "btn btn-default" %>
           </div>
         </div>
       <% end %>
@@ -44,7 +45,7 @@
 
 <script>
   $('.rating-container-big div').raty({
-    score: 0,
+    score: <%= @review.rating %>,
     path: 'assets',
     scoreName: 'review[rating]',
     scoreId: 'review_rating',
