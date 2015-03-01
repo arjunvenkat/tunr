@@ -11,7 +11,8 @@
         <%= @episode.episode_num %> - <%= @episode.title %>
       </a>
     </h1>
-    <% if user_signed_in? && Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+    <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+    <% if user_signed_in? && review_for_current_user %>
       <div class="rating-container-big orange">
         <div></div>
       </div>
@@ -84,12 +85,14 @@
             </div>
             <div class="rating-container-podcast">
               <div></div>
-              <%# review.rating.times do %>
-                <!-- <i class="star-on-png"></i> -->
-              <%# end %>
             </div>
           </h3>
-          <p><%= review.contents %></p>
+          <% if review.user == current_user %>
+            <p class="edit-review-box"><%= review.contents %></p>
+            <a href="<%= edit_from_episode_url(review_id: review.id, prev_controller: params[:controller]) %>">Edit</a>
+          <% else %>
+            <p><%= review.contents %></p>
+          <% end %>
         </div>
 
       <% end %>
@@ -124,7 +127,7 @@
     var rating = $(this).attr('data-alt');
     $.ajax({
         dataType: "script",
-        url: "/reviews",
+        url: '/reviews',
         type: "POST",
         data: {
           review: {

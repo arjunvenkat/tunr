@@ -40,8 +40,12 @@
         </div>
       </h3>
       <div><a href="<%= podcast_url(review.episode.podcast) %>"><%= review.episode.podcast.name %></a></div>
-      <p><%= review.contents %></p>
-    </div>
+      <% if @user == current_user %>
+        <p class="edit-review-box"><%= review.contents %></p>
+        <a href="<%= edit_from_episode_url(review_id: review.id) %>">Edit</a>
+      <% else %>
+        <p><%= review.contents %></p>
+      <% end %>    </div>
   <% end %>
 </div>
 <div class="pagination-container">

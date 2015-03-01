@@ -31,6 +31,7 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
+
   end
 
   # POST /reviews
@@ -55,10 +56,16 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1.json
   def update
     @review.user_id = current_user.id
+    raise params.inspect
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to @review.episode, notice: 'Review was successfully updated.' }
+        if params[:redirect_controller] == 'users'
+          format.html { redirect_to @review.user, notice: 'Review was successfully updated.' }
+        else
+          format.html { redirect_to @review.episode, notice: 'Review was successfully updated.' }
+        end
         format.json { render :show, status: :ok, location: @review }
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @review.errors, status: :unprocessable_entity }
