@@ -27,7 +27,7 @@
           <li class="episode_<%= episode.id %> episode">
             <a href="<%= episode_url(episode) %>"><img src="<%= episode.podcast.image_url %>" class="pod-icon"></a>
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
-            <div><strong>published <%= (episode.published_date.strftime("%B %Y")) %></strong></div>
+            <div><strong>published <%= (episode.published_date.strftime("%B %d, %Y")) %></strong></div>
             <p><%= truncate episode.desc, length: 200 %></p>
           </li>
         <% end %>
