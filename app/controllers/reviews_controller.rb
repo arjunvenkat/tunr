@@ -56,7 +56,6 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1.json
   def update
     @review.user_id = current_user.id
-    raise params.inspect
     respond_to do |format|
       if @review.update(review_params)
         if params[:redirect_controller] == 'users'
