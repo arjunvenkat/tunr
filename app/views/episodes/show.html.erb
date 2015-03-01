@@ -42,35 +42,38 @@
         <div class="review review_<%= review.id %>">
           <h3>
             <% if user_signed_in? %>
-              <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
-              <% if upvote %>
-                <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                <script>
-                  $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                    $.ajax({
-                        dataType: "script",
-                        url: "/upvotes/<%= upvote.id %>",
-                        type: "DELETE",
-                    })
-                  });
-                </script>
-              <% else %>
-                <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                <script type="text/javascript">
-                  $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
-                    $.ajax({
-                        dataType: "script",
-                        url: "/upvotes",
-                        type: "POST",
-                        data: {
-                          upvote: {
-                           user_id: <%= current_user.id %>,
-                           review_id: <%= review.id %>,
-                          }}
-                    })
-                  });
+              <% unless review.user == current_user %>
+                <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
+                <% if upvote %>
+                  <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                  <script>
+                    $('.upvoted.upvote_<%= upvote.id %>').click(function(){
+                      $.ajax({
+                          dataType: "script",
+                          url: "/upvotes/<%= upvote.id %>",
+                          type: "DELETE",
+                      })
+                    });
                   </script>
+                <% else %>
+                  <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
+                  <script type="text/javascript">
+                    $('.not-upvoted.upvote_review_<%= review.id %>').click(function(){
+                      $.ajax({
+                          dataType: "script",
+                          url: "/upvotes",
+                          type: "POST",
+                          data: {
+                            upvote: {
+                             user_id: <%= current_user.id %>,
+                             review_id: <%= review.id %>,
+                            }}
+                      })
+                    });
+                    </script>
+                <% end %>
               <% end %>
+
             <% else %>
               <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
             <% end %>
