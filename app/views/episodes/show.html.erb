@@ -11,6 +11,7 @@
         <%= @episode.episode_num %> - <%= @episode.title %>
       </a>
     </h1>
+
     <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
     <% if user_signed_in? && review_for_current_user %>
       <div class="rating-container-big orange">
@@ -21,18 +22,48 @@
         <div></div>
       </div>
     <% end %>
+    <div class="published-date"><em>Published <%= @episode.published_date.strftime("%B %d, %Y") %></em></div>
     <div class="col-md-8 col-md-offset-2 push-down-1 desc">
       <p><%= @episode.desc %></p>
     </div>
   </div>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <% review = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
-      <% if review %>
-        <div><a href="/reviews/edit/from_episode?review_id=<%=review.id %>&episode_id=<%=@episode.id %>">Edit your thoughts on <%= @episode.title %></a></div>
-      <% else %>
-        <div><a href="/reviews/new/from_episode?episode_id=<%= @episode.id %>">Share your thoughts on <%= @episode.title %></a></div>
-      <% end %>
+      <div class="thought-form">
+        <% if review_for_current_user %>
+          <%= form_tag("/reviews/#{review_for_current_user.id}", method: :put) do %>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= review_for_current_user.episode.title %>?" autofocus><%= review_for_current_user.contents %></textarea>
+              </div>
+              <div>
+                <input type="hidden" name="review[episode_id]" value="<%= review_for_current_user.episode.id %>" >
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-10 push-down-1">
+                <input type="submit" value="Update your thoughts on <%= review_for_current_user.episode.title %>" class="btn btn-default">
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <%= form_tag('/reviews/') do %>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= @episode.title %>?" autofocus></textarea>
+              </div>
+              <div>
+                <input type="hidden" name="review[episode_id]" value="<%= @episode.id %>" >
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-10 push-down-1">
+                <input type="submit" value="Share your thoughts on <%= @episode.title %>" class="btn btn-default">
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -109,35 +140,61 @@
 <script>
   <% @reviews.each do |review| %>
     $('.review_<%= review.id %> .rating-container-podcast div').raty({
-      score: <%= review.rating %>,
+      score: <%= review.rating ? review.rating : 0 %>,
       path: 'assets',
       readOnly: true,
       starType: 'i'
     });
   <% end %>
 
-  $('.rating-container-big div').raty({
-    score: <%= @episode.rating ? @episode.rating : 0 %>,
-    path: 'assets',
-    starType: 'i'
-  });
+
+  <% if review_for_current_user %>
+    $('.rating-container-big div').raty({
+      score: <%= review_for_current_user.rating ? review_for_current_user.rating : 0 %>,
+      path: 'assets',
+      starType: 'i'
+    });
+  <% else %>
+    $('.rating-container-big div').raty({
+      score: <%= @episode.rating ? @episode.rating : 0 %>,
+      path: 'assets',
+      starType: 'i'
+    });
+  <% end %>
+
 
 <% if user_signed_in? %>
-  $('.rating-container-big div i').click(function(){
-    var rating = $(this).attr('data-alt');
-    $.ajax({
-        dataType: "script",
-        url: '/reviews',
-        type: "POST",
-        data: {
-          review: {
-           user_id: <%= current_user.id %>,
-           episode_id: <%= @episode.id %>,
-           rating: rating,
-           contents: ""
-          }}
-    })
-  });
+  <% if review_for_current_user %>
+    $('.rating-container-big div i').click(function(){
+      var rating = $(this).attr('data-alt');
+      $.ajax({
+          dataType: "script",
+          url: "/reviews/<%= review_for_current_user.id %>",
+          type: "PUT",
+          data: {
+            review: {
+             user_id: <%= current_user.id %>,
+             episode_id: <%= @episode.id %>,
+             rating: rating,
+            }}
+      })
+    });
+  <% else %>
+    $('.rating-container-big div i').click(function(){
+      var rating = $(this).attr('data-alt');
+      $.ajax({
+          dataType: "script",
+          url: '/reviews',
+          type: "POST",
+          data: {
+            review: {
+             user_id: <%= current_user.id %>,
+             episode_id: <%= @episode.id %>,
+             rating: rating,
+            }}
+      })
+    });
+  <% end %>
 <% end %>
 
 

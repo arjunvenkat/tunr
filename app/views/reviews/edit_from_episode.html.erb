@@ -48,7 +48,7 @@
 
 <script>
   $('.rating-container-big div').raty({
-    score: <%= @review.rating %>,
+    score: <%= @episode.rating ? @episode.rating : 0 %>,
     path: 'assets',
     scoreName: 'review[rating]',
     scoreId: 'review_rating',

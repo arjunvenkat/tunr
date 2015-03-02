@@ -9,3 +9,5 @@ $('.review_<%= @review.id %> .rating-container-podcast div').raty({
 });
 
 $('.rating-container-big').addClass('orange');
+
+$('.thought-form').html("<%= j(render('edit_thought', :review_for_current_user => @review)) %>")

@@ -13,7 +13,7 @@ class Review < ActiveRecord::Base
       episode = self.episode
       ep_ratings = episode.reviews.map do |review|
         review.rating
-      end
+      end.compact
 
       episode.rating = ep_ratings.sum / ep_ratings.size.to_f
       episode.save

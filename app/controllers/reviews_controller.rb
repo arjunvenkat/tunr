@@ -60,8 +60,10 @@ class ReviewsController < ApplicationController
       if @review.update(review_params)
         if params[:redirect_controller] == 'users'
           format.html { redirect_to @review.user, notice: 'Review was successfully updated.' }
-        else
+        elsif params[:redirect_controller] == 'episodes'
           format.html { redirect_to @review.episode, notice: 'Review was successfully updated.' }
+        else
+          format.html { redirect_to :back, notice: 'Review was successfully updated.' }
         end
         format.json { render :show, status: :ok, location: @review }
         format.js
