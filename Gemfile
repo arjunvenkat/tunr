@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # faciliates creating fake data
 gem 'faker'
 
+# cleans up data
+gem 'sanitize'
+
 gem 'jquery-turbolinks'
 gem 'kaminari'
 
