@@ -9,7 +9,23 @@
 
 <div class="container">
   <div class="row push-down-2">
-    <div class='col-md-5'>
+    <div class="col-md-12">
+      <h2>Best of the week</h2>
+      <ul class="best-of-week-list">
+        <% @episodes.each do |episode| %>
+          <li class="episode_<%= episode.id %> episode">
+            <a href="<%= episode_url(episode) %>"><img src="<%= episode.podcast.image_url %>" class="pod-icon"></a>
+            <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
+            <div><strong>published <%= (episode.published_date.strftime("%B %d, %Y")) %></strong></div>
+            <p><%= truncate episode.desc, length: 200 %></p>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  </div>
+  <div class="row push-down-2">
+    <div class='col-md-5 col-md-offset-2'>
       <h2>Activity</h2>
       <div class="row push-down-1">
         <div class="col-md-12">
@@ -75,65 +91,51 @@
               <% end %>
             </ul>
           <% else %>
-            <div class="follow-suggestions">
-              <div class="heading">You're not following anyone yet! How about some of these interesting folks?</div>
-              <ul class="users-to-follow user-list">
-                <% User.order('upvoted_count DESC').limit(8).each do |user| %>
-                  <li>
-                    <a href="<%= user_url(user) %>">
-                      <div style="background-image: url(<%= user.image_url %>)"class="user-profile-pic-circular"></div>
-                    </a>
-                    <div class="user-info">
-                      <h3><a href="<%= user_url(user) %>"><%= user.username %></a> <small><%= user.upvoted_count %> upvotes</small></h3>
-                      <p><%= user.desc %></p>
-                      <div class="follow-status user_<%= user.id %>">
-                        <% if current_user.follows.include? user %>
-                          <div class="following-message">You're following <%= user.username %>!</div>
-                          <% following = Following.where(followed_id: user.id, follower_id: current_user.id).first %>
-                          <div class="unfollow"><a href="<%= following_url(following) %>" data-method="delete" data-remote="true">unfollow</a></div>
-                        <% elsif current_user != user %>
-                          <%= form_tag("/followings", method: :post, remote: true) do %>
-                            <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
-                            <input type="hidden" name="following[followed_id]" value="<%= user.id %>">
-                            <button type="submit" class="follow btn btn-default">Follow <%= user.username %></button>
-                          <% end %>
-                        <% end %>
-                      </div>
-                    </div>
-
-
-
-                  </li>
-                <% end %>
-              </ul>
-            </div>
+              <p>Go follow some people!</p>
           <% end %>
         </div>
       </div>
     </div>
-    <div class='col-md-6 col-md-offset-1'>
-      <h2>Best of the week</h2>
-      <div class="row push-down-2">
-        <% @episodes.each do |episode| %>
-          <div class="col-md-6">
-            <div class="ep-teaser">
-              <div class="image-container">
-                <a href="<%= episode_url(episode.id) %>"><img class="best-of-week" src="<%= episode.podcast.image_url %>" alt="<%= episode.podcast.name %>"></a>
-              </div>
-              <div class="teaser-text">
-                <div class="rating-container">
-                  <div></div>
+    <div class='col-md-3 col-md-offset-1'>
+      <% if user_signed_in? %>
+        <div class="follow-suggestions">
+
+          <div class="heading"><h3>Who to follow</h3></div>
+          <ul class="users-to-follow user-list">
+            <% users = (User.order('upvoted_count DESC').limit(8) - [current_user] )  %>
+            <% users.each do |user| %>
+              <li>
+                <div>
+                  <a href="<%= user_url(user) %>">
+                    <div style="background-image: url(<%= user.image_url %>)"class="user-profile-pic-circular"></div>
+                  </a>
                 </div>
-                <h5><a href="<%= episode_url(episode) %>"><strong>Ep <%= episode.episode_num %>:</strong> <%= episode.title %></a></h5>
-                <p><%= truncate(episode.desc, length: 250) %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-      <div class="row">
-        <div class="big-link push-down-2"><a href="/podcasts">See all podcasts</a></div>
-      </div>
+                <div class="user-info">
+                  <h3><a href="<%= user_url(user) %>"><%= user.username %></a> <small><%= user.upvoted_count %> upvotes</small></h3>
+                  <p><%= user.desc %></p>
+                  <div class="follow-status user_<%= user.id %>">
+                    <% if current_user.follows.include? user %>
+                      <div class="following-message">You're following <%= user.username %>!</div>
+                      <% following = Following.where(followed_id: user.id, follower_id: current_user.id).first %>
+                      <div class="unfollow"><a href="<%= following_url(following) %>" data-method="delete" data-remote="true">unfollow</a></div>
+                    <% elsif current_user != user %>
+                      <%= form_tag("/followings", method: :post, remote: true) do %>
+                        <input type="hidden" name="following[follower_id]" value="<%= current_user.id %>">
+                        <input type="hidden" name="following[followed_id]" value="<%= user.id %>">
+                        <button type="submit" class="follow btn btn-default">Follow <%= user.username %></button>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+
+
+
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+      <% end %>
     </div>
   </div>
 

@@ -177,15 +177,62 @@ h1 .small {
   color: white;
 }
 
+
+
+
+.best-of-week-list {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  min-height: 300px;
+  padding-left: 0;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
+
+  .episode {
+    display: inline-block;
+
+    width: 300px;
+    height: 260px;
+    white-space: normal;
+    vertical-align: top;
+    padding: 24px 24px;
+    border-right: 1px solid lightgray;
+  }
+
+  .episode:first-of-type {
+    padding-left: 0;
+  }
+  .episode:last-of-type {
+    padding-right: 0;
+    border-right: none;
+  }
+}
+
 .follow-suggestions {
 
+  .users-to-follow li {
+    margin-bottom: 24px;
+    border-bottom: 1px solid lightgray;
+  }
+
   .heading {
+    padding-top: 58px;
     font-size: 16px;
   }
 
   .user-info {
-    display: inline-block;
-    padding-left: 14px;
+    display: block;
+    padding-top: 14px;
 
     h3 {
       margin-top: -14px;
