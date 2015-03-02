@@ -16,7 +16,8 @@
           <li class="episode_<%= episode.id %> episode">
             <a href="<%= episode_url(episode) %>"><img src="<%= episode.podcast.image_url %>" class="pod-icon"></a>
             <a href="<%= episode_url(episode) %>"><strong><%= episode.episode_num %> - <%= episode.title %></strong></a> <div class="rating-container-podcast"><div></div></div>
-            <div><strong>published <%= (episode.published_date.strftime("%B %d, %Y")) %></strong></div>
+            <div><strong><%= episode.podcast.name %></strong></div>
+            <div><em>published <%= (episode.published_date.strftime("%B %d, %Y")) %></em></div>
             <p><%= truncate episode.desc, length: 200 %></p>
           </li>
         <% end %>
@@ -115,7 +116,8 @@
                   </a>
                 </div>
                 <div class="user-info">
-                  <h3><a href="<%= user_url(user) %>"><%= user.username %></a> <small><%= user.upvoted_count %> upvotes</small></h3>
+                  <h3><a href="<%= user_url(user) %>"><%= user.username %></a><br>
+                  <small><%= user.upvoted_count %> upvotes</small></h3>
                   <p><%= user.desc %></p>
                   <div class="follow-status user_<%= user.id %>">
                     <% if current_user.follows.include? user %>
