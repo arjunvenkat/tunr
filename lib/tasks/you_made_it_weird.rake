@@ -68,20 +68,23 @@ namespace :scrape do
       end
 
       podcast  = Podcast.find_by(name: "You Made It Weird")
-      e = Episode.new
-      e.podcast_id = podcast.id
-      e.season = season
-      e.episode_num = ep_num
-      e.title = ep_title
-      e.desc = ep_desc
-      e.duration = ep_duration
-      e.published_date = ep_date
-      e.url = ep_link
-      e.explicit = true
-      puts e.inspect
-      e.save
 
-      puts "#{ep_num} - #{ep_title} - #{ep_date} ** completed **"
+      unless podcast.episodes.where(episode_num: ep_num).present?
+        e = Episode.new
+        e.podcast_id = podcast.id
+        e.season = season
+        e.episode_num = ep_num
+        e.title = ep_title
+        e.desc = ep_desc
+        e.duration = ep_duration
+        e.published_date = ep_date
+        e.url = ep_link
+        e.explicit = true
+        puts e.inspect
+        e.save
+        puts "#{ep_num} - #{ep_title} - #{ep_date} ** completed **"
+      end
+
 
     end
 

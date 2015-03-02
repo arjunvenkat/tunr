@@ -66,7 +66,7 @@ namespace :scrape do
         puts "created podcast: #{podcast.name}"
       end
 
-      unless Episode.find_by(episode_num: ep_num)
+      unless podcast.episodes.where(episode_num: ep_num).present?
         e = Episode.new
         e.podcast_id = podcast.id
         e.published_date = ep_date

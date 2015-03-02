@@ -74,33 +74,33 @@ namespace :scrape do
                             .gsub('&rsquo;', '\'')
                             .gsub('&rsquo;', '\"')
 
-              p = Podcast.find_by(name: "This American Life")
-              unless p
-                p = Podcast.new
-                p.name = "This American Life"
-                p.desc = "This American Life is a weekly public radio show broadcast on more than 500 stations to about 2.2 million listeners. There's a theme to each episode of This American Life, and a variety of stories on that theme. It's mostly true stories of everyday people, though not always. There's lots more to the show, but it's sort of hard to describe. Probably the best way to understand the show is to start at our favorites page, though we do have longer guides to our radio show and our TV show. If you want to dive into the hundreds of episodes we've done over the years, there's an archive of all our old radio shows and listings for all our TV episodes, too."
-                p.image_url = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/This_American_Life_logo.svg/252px-This_American_Life_logo.svg.png"
-                p.save
+              podcast = Podcast.find_by(name: "This American Life")
+              unless podcast
+                podcast = Podcast.new
+                podcast.name = "This American Life"
+                podcast.desc = "This American Life is a weekly public radio show broadcast on more than 500 stations to about 2.2 million listeners. There's a theme to each episode of This American Life, and a variety of stories on that theme. It's mostly true stories of everyday people, though not always. There's lots more to the show, but it's sort of hard to describe. Probably the best way to understand the show is to start at our favorites page, though we do have longer guides to our radio show and our TV show. If you want to dive into the hundreds of episodes we've done over the years, there's an archive of all our old radio shows and listings for all our TV episodes, too."
+                podcast.image_url = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/This_American_Life_logo.svg/252px-This_American_Life_logo.svg.png"
+                podcast.save
               end
-
-              e = Episode.new
-              e.podcast_id = p.id
-              e.title = ep_name
-              e.season = season
-              e.episode_num = ep_num
-              e.desc = ep_desc
-              e.duration = 60
-              e.published_date = Date.parse(ep_date)
-              e.url = ep_link
-              e.explicit = false
-
-              e.save
+              unless podcast.episodes.where(episode_num: ep_num).present?
+                e = Episode.new
+                e.podcast_id = podcast.id
+                e.title = ep_name
+                e.season = season
+                e.episode_num = ep_num
+                e.desc = ep_desc
+                e.duration = 60
+                e.published_date = Date.parse(ep_date)
+                e.url = ep_link
+                e.explicit = false
+                e.save
+                puts "season: #{season} ep:#{ep_num} - #{ep_name} ** completed **"
+              end
 
               # CSV.open("tal.csv", "a+") do |csv|
               #   csv << [season, ep_num, ep_name, ep_desc, 60, ep_date, ep_link, ""]
               # end
 
-              puts "season: #{season} ep:#{ep_num} - #{ep_name} ** completed **"
             end
           end
         end

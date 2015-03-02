@@ -78,23 +78,25 @@ namespace :scrape do
               puts "created podcast: #{podcast.name}"
             end
 
-            e = Episode.new
-            e.podcast_id = podcast.id
-            e.season = season
-            e.episode_num = ""
-            e.title = ep_title
-            e.desc = ep_desc
-            e.duration = 60
-            e.published_date = Date.parse(ep_date)
-            e.url = ep_link
-            e.explicit = false
-            e.save
+            unless podcast.episodes.where(title: ep_title).present?
+              e = Episode.new
+              e.podcast_id = podcast.id
+              e.season = season
+              e.episode_num = ""
+              e.title = ep_title
+              e.desc = ep_desc
+              e.duration = 60
+              e.published_date = Date.parse(ep_date)
+              e.url = ep_link
+              e.explicit = false
+              e.save
+              puts "#{season} - #{ep_title} - #{ep_date} ** completed **"
+            end
 
 
             # CSV.open("ted_radio_hour.csv", "a+") do |csv|
             #   csv << [season, "", ep_title, ep_desc, "60", ep_date, ep_link, ""]
             # end
-            puts "#{season} - #{ep_title} - #{ep_date} ** completed **"
           end
         end
       end
