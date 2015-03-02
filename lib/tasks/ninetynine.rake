@@ -46,23 +46,25 @@ namespace :scrape do
         ep_desc = desc_page.search('.entry-content p:nth-of-type(1)').text
 
         podcast  = Podcast.find_by(name: "99% Invisible")
-        e = Episode.new
-        e.podcast_id = podcast.id
-        e.season = season
-        e.episode_num = ep_num
-        e.title = ep_title.encode('utf-8', :fallback => fallback)
-        e.desc = ep_desc.encode('utf-8', :fallback => fallback)
-        e.duration = 20
-        e.published_date = ep_date
-        e.url = ep_link
-        e.explicit = false
-        e.save
+        unless podcast.episodes.where(episode_num: ep_num).present?
+          e = Episode.new
+          e.podcast_id = podcast.id
+          e.season = season
+          e.episode_num = ep_num
+          e.title = ep_title.encode('utf-8', :fallback => fallback)
+          e.desc = ep_desc.encode('utf-8', :fallback => fallback)
+          e.duration = 20
+          e.published_date = ep_date
+          e.url = ep_link
+          e.explicit = false
+          e.save
 
 
-        # CSV.open("99percent_invisible.csv", "a+") do |csv|
-        #   csv << [season, ep_num, ep_title, ep_desc, 20, ep_date, ep_link, ""]
-        # end
-        puts "#{ep_num} #{ep_title} ** completed **"
+          # CSV.open("99percent_invisible.csv", "a+") do |csv|
+          #   csv << [season, ep_num, ep_title, ep_desc, 20, ep_date, ep_link, ""]
+          # end
+          puts "#{ep_num} #{ep_title} ** completed **"
+        end
       end
 
 

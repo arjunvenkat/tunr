@@ -71,22 +71,24 @@ namespace :scrape do
 
 
       podcast  = Podcast.find_by(name: "The Joe Rogan Experience")
-      e = Episode.new
-      e.podcast_id = podcast.id
-      e.season = season
-      e.episode_num = ep_num
-      e.title = ep_title
-      e.desc = ep_desc
-      e.duration = 20
-      e.published_date = ep_date
-      e.url = ep_link
-      e.explicit = false
-      e.save
+      unless podcast.episodes.where(episode_num: ep_num).present?
+        e = Episode.new
+        e.podcast_id = podcast.id
+        e.season = season
+        e.episode_num = ep_num
+        e.title = ep_title
+        e.desc = ep_desc
+        e.duration = 20
+        e.published_date = ep_date
+        e.url = ep_link
+        e.explicit = false
+        e.save
 
-      # CSV.open("joe_rogan.csv", "a+") do |csv|
-      #   csv << [ep_num,season, ep_num, "N",ep_title, ep_desc, ep_duration, ep_date, ep_link, "Y"]
-      # end
-      puts "#{ep_num} - #{ep_title} - #{ep_date} ** completed **"
+        # CSV.open("joe_rogan.csv", "a+") do |csv|
+        #   csv << [ep_num,season, ep_num, "N",ep_title, ep_desc, ep_duration, ep_date, ep_link, "Y"]
+        # end
+        puts "#{ep_num} - #{ep_title} - #{ep_date} ** completed **"
+      end
 
     end
 
