@@ -12,8 +12,8 @@
       </a>
     </h1>
 
-    <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
     <% if user_signed_in? && review_for_current_user %>
+      <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
       <div class="rating-container-big orange">
         <div></div>
       </div>
@@ -30,7 +30,7 @@
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="thought-form">
-        <% if review_for_current_user %>
+        <% if user_signed_in? && review_for_current_user %>
           <%= form_tag("/reviews/#{review_for_current_user.id}", method: :put) do %>
             <div class="form-group">
               <div class="col-sm-12">
@@ -46,7 +46,7 @@
               </div>
             </div>
           <% end %>
-        <% else %>
+        <% elsif user_signed_in? %>
           <%= form_tag('/reviews/') do %>
             <div class="form-group">
               <div class="col-sm-12">
@@ -62,6 +62,8 @@
               </div>
             </div>
           <% end %>
+        <% else %>
+          <h3 class="sign-in-prompt"><a href="/users/sign_in">Sign in</a> to share your thoughts</h3>
         <% end %>
       </div>
     </div>
