@@ -1,7 +1,7 @@
 class Review < ActiveRecord::Base
   belongs_to :episode
   belongs_to :user
-  has_many :upvotes
+  has_many :upvotes, dependent: :destroy
   after_save :calcuate_average_rating
 
   validates_uniqueness_of :user_id, :scope => :episode_id
