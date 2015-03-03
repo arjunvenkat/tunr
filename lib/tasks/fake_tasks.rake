@@ -3,15 +3,17 @@ namespace :fake do
   task :reviews => :environment do
 
     50.times do
-      500.times do
+      500.times do |count|
         user = User.offset(rand(User.count)).first
-        episode = Episode.offset(rand(Episode.count)).first
+        podcast = Podcast.offset(rand(Podcast.count)).first
+        episode = podcast.episodes.offset(rand(podcast.episodes.count)).first
         review = Review.new
         review.user_id = user.id
         review.episode_id = episode.id
         review.rating = rand(1..5)
         review.contents = Faker::Lorem.paragraph(5)
         review.save
+        puts "#{count} created"
       end
       puts "500 fake reviews created"
     end
