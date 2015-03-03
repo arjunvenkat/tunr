@@ -16,6 +16,7 @@ gem 'rails', '4.2.0'
 
 gem 'pg'
 
+gem 'quiet_assets', group: :development
 
 group :production do
   gem 'rails_12factor'
