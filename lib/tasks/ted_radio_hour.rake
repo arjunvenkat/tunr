@@ -65,7 +65,7 @@ namespace :scrape do
                                                   .gsub('&ldquo;', '\"')
                                                   .gsub('&rdquo;', '\"')
                                                   .gsub('&rsquo;', '\'')
-                                                  .gsub('&rsquo;', '\"')
+                                                  .gsub('&rsquo;', '\'')
 
 
             podcast = Podcast.find_by(name: "TED Radio Hour")

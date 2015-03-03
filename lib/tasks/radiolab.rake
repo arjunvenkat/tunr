@@ -1,6 +1,6 @@
 namespace :scrape do
-  desc "Scrape This American Life data"
-  task :tal => :environment do
+  desc "Scrape Radiolab data"
+  task :radiolab => :environment do
     require 'mechanize'
     require 'open-uri'
 
@@ -16,14 +16,94 @@ namespace :scrape do
         '“' => '"', '—' => '-'
       }
 
-    podcast = Podcast.find_by(name: "This American Life")
+    podcast = Podcast.find_by(name: "Radiolab")
     unless podcast
       podcast = Podcast.new
-      podcast.name = "This American Life"
-      podcast.desc = "This American Life is a weekly public radio show broadcast on more than 500 stations to about 2.2 million listeners. There's a theme to each episode of This American Life, and a variety of stories on that theme. It's mostly true stories of everyday people, though not always. There's lots more to the show, but it's sort of hard to describe. Probably the best way to understand the show is to start at our favorites page, though we do have longer guides to our radio show and our TV show. If you want to dive into the hundreds of episodes we've done over the years, there's an archive of all our old radio shows and listings for all our TV episodes, too."
-      podcast.image_url = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/This_American_Life_logo.svg/252px-This_American_Life_logo.svg.png"
+      podcast.name = "Radiolab"
+      podcast.desc = "Radiolab is a show about curiosity. Where sound illuminates ideas, and the boundaries blur between science, philosophy, and human experience."
+      podcast.image_url = "http://parmenides.wnyc.org/media/photologue/photos/RL_vert.png"
       podcast.save
     end
+
+    url = "http://en.wikipedia.org/wiki/List_of_Radiolab_episodes"
+
+    agent = Mechanize.new
+    page = agent.get(url)
+    main_tables = page.search('h2 + table')
+    season = 0
+    duration = 60
+
+    main_tables.each_with_index do |table, index|
+      season = index + 1
+      ep_num = ""
+      ep_title = ""
+      ep_date = ""
+      ep_link = ""
+      ep_desc = ""
+      table.search('tr').each_with_index do |row, index|
+        unless index == 0
+          if index.odd?
+            ep_num = row.search('th').text
+            ep_title = row.search('td:nth-of-type(1)').text
+            ep_date = row.search('td:nth-of-type(2) span.published').text
+            # puts "#{ep_num} - #{ep_title}  #{ep_date}"
+          else
+            if row.search('a')[0]
+              ep_link = row.search('a')[0]['href']
+              # puts "#{ep_link}"
+            else
+              puts 'not exist'
+            end
+            desc_page = agent.get(ep_link)
+            ep_desc = ""
+            desc_page.search('.article-description p').each_with_index do |graf, index|
+              if index == 0
+                ep_desc << graf.text
+              else
+                ep_desc << "\n\n#{graf.text}"
+              end
+            end
+            ep_desc
+                .strip
+                .gsub('&amp;', '&')
+                .gsub('&nbsp;', ' ')
+                .gsub('&ldquo;', '\"')
+                .gsub('&rdquo;', '\"')
+                .gsub('&rsquo;', '\'')
+                .gsub('&rsquo;', '\'')
+
+            unless podcast.episodes.where(episode_num: ep_num).present?
+              e = Episode.new
+              e.podcast_id = podcast.id
+              e.title = ep_title
+              e.season = season
+              e.episode_num = ep_num
+              e.desc = ep_desc
+              e.duration = 60
+              puts ep_date
+              e.published_date = Date.parse(ep_date)
+              e.url = ep_link
+              e.explicit = false
+              puts e.inspect
+              e.save
+              puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
+            end
+
+            ep_num = ""
+            ep_title = ""
+            ep_date = ""
+            ep_link = ""
+            ep_desc = ""
+          end
+        end
+      end
+    end
+
+    puts
+    puts
+    puts "Completed scrape of Radiolab data"
+
+
 
     agent = Mechanize.new
     url = "http://www.thisamericanlife.org/radio-archives"
@@ -60,7 +140,7 @@ namespace :scrape do
           e.desc = ep_desc
           e.duration = 60
           e.published_date = Date.parse(ep_date)
-          e.url = full_ep_link
+          e.url = ep_link
           e.explicit = false
           e.save
           puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
@@ -72,6 +152,6 @@ namespace :scrape do
 
     puts
     puts
-    puts "Completed scrape of This American Life data"
+    puts "Completed scrape of Radiolab data"
   end
 end
