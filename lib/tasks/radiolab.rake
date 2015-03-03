@@ -6,15 +6,15 @@ namespace :scrape do
 
 
     fallback = {
-        'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
-        'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I',
-        'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U',
-        'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a',
-        'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i',
-        'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u',
-        'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f', '’' => '', '…' => '...', '”' => '"',
-        '“' => '"', '—' => '-'
-      }
+      'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
+      'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I',
+      'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U',
+      'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a',
+      'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i',
+      'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u',
+      'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f', '’' => '', '…' => '...', '”' => '"',
+      '“' => '"', '—' => '-'
+    }
 
     podcast = Podcast.find_by(name: "Radiolab")
     unless podcast
@@ -25,78 +25,77 @@ namespace :scrape do
       podcast.save
     end
 
-    url = "http://en.wikipedia.org/wiki/List_of_Radiolab_episodes"
+    url = "http://www.radiolab.org/series/podcasts/"
 
     agent = Mechanize.new
     page = agent.get(url)
-    main_tables = page.search('h2 + table')
-    season = 0
-    duration = 60
+    link = page.search('.pagefooter-next a')
+    while link.present?
+      # current page
+      page.search('.episode-tease').each do |teaser|
+        title_link = teaser.search('h2.title a')
+        ep_title = title_link.text
+        ep_link = title_link.attr('href')
+        ep_date = teaser.search('h3.date').text
+        ep_page = agent.get(ep_link)
+        season = ep_page.search('div.seanum-epnum')
+                                    .text
+                                    .split('|')[0]
+                                    .strip
+        season.slice!("Season ")
 
-    main_tables.each_with_index do |table, index|
-      season = index + 1
-      ep_num = ""
-      ep_title = ""
-      ep_date = ""
-      ep_link = ""
-      ep_desc = ""
-      table.search('tr').each_with_index do |row, index|
-        unless index == 0
-          if index.odd?
-            ep_num = row.search('th').text
-            ep_title = row.search('td:nth-of-type(1)').text
-            ep_date = row.search('td:nth-of-type(2) span.published').text
-            # puts "#{ep_num} - #{ep_title}  #{ep_date}"
-          else
-            if row.search('a')[0]
-              ep_link = row.search('a')[0]['href']
-              # puts "#{ep_link}"
-            else
-              puts 'not exist'
-            end
-            desc_page = agent.get(ep_link)
-            ep_desc = ""
-            desc_page.search('.article-description p').each_with_index do |graf, index|
-              if index == 0
-                ep_desc << graf.text
-              else
-                ep_desc << "\n\n#{graf.text}"
-              end
-            end
-            ep_desc
-                .strip
-                .gsub('&amp;', '&')
+        # ep nums are repeated throughout each season
+        ep_num = ""
+        ep_desc = ""
+        ep_page.search('.article-description').each do |desc_graf|
+          ep_desc << desc_graf.text
+        end
+        ep_desc.gsub('&amp;', '&')
                 .gsub('&nbsp;', ' ')
                 .gsub('&ldquo;', '\"')
                 .gsub('&rdquo;', '\"')
                 .gsub('&rsquo;', '\'')
                 .gsub('&rsquo;', '\'')
 
-            unless podcast.episodes.where(episode_num: ep_num).present?
-              e = Episode.new
-              e.podcast_id = podcast.id
-              e.title = ep_title
-              e.season = season
-              e.episode_num = ep_num
-              e.desc = ep_desc
-              e.duration = 60
-              puts ep_date
-              e.published_date = Date.parse(ep_date)
-              e.url = ep_link
-              e.explicit = false
-              e.save
-              puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
-            end
-
-            ep_num = ""
-            ep_title = ""
-            ep_date = ""
-            ep_link = ""
-            ep_desc = ""
+          matched_episodes = podcast.episodes.where(title: ep_title)
+          unless matched_episodes.present?
+            e = Episode.new
+            e.podcast_id = podcast.id
+            e.title = ep_title
+            e.season = season
+            e.episode_num = ep_num
+            e.desc = ep_desc.strip
+            e.duration = 60
+            e.published_date = Date.parse(ep_date)
+            e.url = ep_link
+            e.explicit = false
+            e.save
+            puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
+          else
+            puts "#{matched_episodes.first.title} already present in database"
           end
-        end
+
+
+      end
+
+      # setting up next page
+      partial_link = page.search('.pagefooter-next a')
+      if partial_link.present?
+        next_page_num = partial_link.attr('href').text.split('/')[1]
+        link = "http://www.radiolab.org/series/podcasts/#{next_page_num}"
+        page = agent.get(link)
+      else
+        link = nil
       end
     end
+
+
+    podcast.episodes.order('published_date ASC').each_with_index do |ep, index|
+      ep.episode_num = index + 1
+      ep.save
+    end
+
+
 
 
     puts
