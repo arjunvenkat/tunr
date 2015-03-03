@@ -13,7 +13,7 @@ namespace :fake do
         review.rating = rand(1..5)
         review.contents = Faker::Lorem.paragraph(5)
         review.save
-        puts "#{count} created"
+        puts "#{count}: review created for #{podcast.name} - #{episode.episode_num}"
       end
       puts "500 fake reviews created"
     end
