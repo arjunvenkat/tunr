@@ -84,10 +84,9 @@ namespace :scrape do
               e.published_date = Date.parse(ep_date)
               e.url = ep_link
               e.explicit = false
-              puts e.inspect
               e.save
               puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
-            end
+            else
 
             ep_num = ""
             ep_title = ""

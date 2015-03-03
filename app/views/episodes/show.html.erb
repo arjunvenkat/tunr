@@ -11,9 +11,11 @@
         <%= @episode.episode_num %> - <%= @episode.title %>
       </a>
     </h1>
+    <% if user_signed_in? %>
+      <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
+    <% end %>
 
     <% if user_signed_in? && review_for_current_user %>
-      <% review_for_current_user = Review.where(user_id: current_user.id, episode_id: @episode.id).first %>
       <div class="rating-container-big orange">
         <div></div>
       </div>
