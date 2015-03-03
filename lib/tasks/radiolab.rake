@@ -86,7 +86,7 @@ namespace :scrape do
               e.explicit = false
               e.save
               puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
-            else
+            end
 
             ep_num = ""
             ep_title = ""
@@ -96,56 +96,6 @@ namespace :scrape do
           end
         end
       end
-    end
-
-    puts
-    puts
-    puts "Completed scrape of Radiolab data"
-
-
-
-    agent = Mechanize.new
-    url = "http://www.thisamericanlife.org/radio-archives"
-    main_page = agent.get(url)
-
-    season_links = main_page.search('#archive-date-nav li a')
-    season_links.each do |season_link|
-      season = season_link.text
-      full_season_link = "http://www.thisamericanlife.org#{ season_link.attr('href') }"
-      season_page = agent.get(full_season_link)
-      ep_links = season_page.search('#archive-episodes li h3 a')
-      ep_links.each do |ep_link|
-        full_ep_link = "http://www.thisamericanlife.org#{ep_link.attr('href')}"
-        ep_page = agent.get(full_ep_link)
-        split_heading = ep_page.search('h1').text.split(':')
-        ep_num = split_heading[0].strip
-        ep_title = split_heading[1].strip
-        ep_date = ep_page.search('.top-inner .date').text
-        ep_desc = ep_page.search('.description').text
-                                              .strip
-                                              .gsub('&amp;', '&')
-                                              .gsub('&nbsp;', ' ')
-                                              .gsub('&ldquo;', '\"')
-                                              .gsub('&rdquo;', '\"')
-                                              .gsub('&rsquo;', '\'')
-                                              .gsub('&rsquo;', '\'')
-
-        unless podcast.episodes.where(episode_num: ep_num).present?
-          e = Episode.new
-          e.podcast_id = podcast.id
-          e.title = ep_title
-          e.season = season
-          e.episode_num = ep_num
-          e.desc = ep_desc
-          e.duration = 60
-          e.published_date = Date.parse(ep_date)
-          e.url = ep_link
-          e.explicit = false
-          e.save
-          puts "season: #{season} ep:#{ep_num} - #{ep_title} ** completed **"
-        end
-      end
-
     end
 
 
