@@ -2,9 +2,11 @@ namespace :fake do
   desc "create fake review data"
   task :reviews => :environment do
     Podcast.all.each do |podcast|
-      episode_selection = podcast.episodes.limit(30)
+      ep_limit = podcast.episodes.count < 50 ? podcast.episodes.count : 50
+
+      episode_selection = podcast.episodes.limit(ep_limit)
       150.times do |count|
-        episode = episode_selection.offset(rand(30)).first
+        episode = episode_selection.offset(rand(ep_limit)).first
         user = User.offset(rand(User.count)).first
         review = Review.new
         review.user_id = user.id
@@ -14,7 +16,7 @@ namespace :fake do
         review.save
         puts "#{count}: review created for #{podcast.name} - #{episode.episode_num}"
       end
-      puts "150 reviews created for #{podcast}"
+      puts "150 reviews created for #{podcast.name}"
     end
     puts "#{150 * Podcast.count} reviews created"
   end
