@@ -86,16 +86,7 @@
               <% unless review.user == current_user %>
                 <% upvote = Upvote.where(review_id: review.id, user_id: current_user.id).first %>
                 <% if upvote %>
-                  <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>" data-upvote-id="<%= upvote_id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
-                  <script>
-                    $('.upvoted.upvote_<%= upvote.id %>').click(function(){
-                      $.ajax({
-                          dataType: "script",
-                          url: "/upvotes/<%= upvote.id %>",
-                          type: "DELETE",
-                      })
-                    });
-                  </script>
+                  <i class="fa fa-thumbs-up upvoted upvote_<%= upvote.id %>" data-upvote-id="<%= upvote.id %>"><small class="upvote-num"><%= review.upvoted_count %></small></i>
                 <% else %>
                   <i class="fa fa-thumbs-o-up not-upvoted upvote_review_<%= review.id %>" data-review-id=<%= review.id %>><small class="upvote-num"><%= review.upvoted_count %></small></i>
                 <% end %>
@@ -190,23 +181,38 @@
       })
     });
   <% end %>
+
+  $('i.upvoted').click(function(){
+    var upvoteId = $(this).attr('data-upvote-id');
+    console.log(upvoteId);
+    $.ajax({
+        dataType: "script",
+        url: "/upvotes/" + upvoteId,
+        type: "DELETE",
+    });
+  });
+
+
+  $('i.not-upvoted').click(function(){
+    var reviewId = $(this).attr('data-review-id');
+    console.log(reviewId);
+    $.ajax({
+        dataType: "script",
+        url: "/upvotes",
+        type: "POST",
+        data: {
+          upvote: {
+           user_id: <%= current_user.id %>,
+           review_id: reviewId,
+          }}
+    })
+  });
+<% else %>
+  $('i.upvoted, i.not-upvoted').addClass('unclickable');
+
 <% end %>
 
 
-$('i.not-upvoted').click(function(){
-  var reviewId = $(this).attr('data-review-id');
-  console.log(reviewId);
-  $.ajax({
-      dataType: "script",
-      url: "/upvotes",
-      type: "POST",
-      data: {
-        upvote: {
-         user_id: <%= current_user.id %>,
-         review_id: reviewId,
-        }}
-  })
-});
 
 
 
