@@ -14,6 +14,8 @@ class EpisodesController < ApplicationController
                   .where.not(rating: nil)
                   .order('rating DESC')
                   .page params[:page]
+
+    # raise "@episodes".inspect
   end
 
   # GET /episodes/1

@@ -31,42 +31,44 @@
   </div>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-      <div class="thought-form">
-        <% if user_signed_in? && review_for_current_user %>
-          <%= form_tag("/reviews/#{review_for_current_user.id}", method: :put) do %>
-            <div class="form-group">
-              <div class="col-sm-12">
-                <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= review_for_current_user.episode.title %>?" autofocus><%= review_for_current_user.contents %></textarea>
+      <div class="row">
+        <div class="thought-form">
+          <% if user_signed_in? && review_for_current_user %>
+            <%= form_tag("/reviews/#{review_for_current_user.id}", method: :put) do %>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= review_for_current_user.episode.title %>?" autofocus><%= review_for_current_user.contents %></textarea>
+                </div>
+                <div>
+                  <input type="hidden" name="review[episode_id]" value="<%= review_for_current_user.episode.id %>" >
+                </div>
               </div>
-              <div>
-                <input type="hidden" name="review[episode_id]" value="<%= review_for_current_user.episode.id %>" >
+              <div class="form-group">
+                <div class="col-sm-10 push-down-1">
+                  <input type="submit" value="Update your thoughts on <%= review_for_current_user.episode.title %>" class="btn btn-default">
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-10 push-down-1">
-                <input type="submit" value="Update your thoughts on <%= review_for_current_user.episode.title %>" class="btn btn-default">
+            <% end %>
+          <% elsif user_signed_in? %>
+            <%= form_tag('/reviews/') do %>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= @episode.title %>?" autofocus></textarea>
+                </div>
+                <div>
+                  <input type="hidden" name="review[episode_id]" value="<%= @episode.id %>" >
+                </div>
               </div>
-            </div>
+              <div class="form-group">
+                <div class="col-sm-10 push-down-1">
+                  <input type="submit" value="Share your thoughts on <%= @episode.title %>" class="btn btn-default">
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <h3 class="sign-in-prompt"><a href="/users/sign_in">Sign in</a> to share your thoughts</h3>
           <% end %>
-        <% elsif user_signed_in? %>
-          <%= form_tag('/reviews/') do %>
-            <div class="form-group">
-              <div class="col-sm-12">
-                <textarea name="review[contents]" class="form-control" rows="5" placeholder="What did you think about <%= @episode.title %>?" autofocus></textarea>
-              </div>
-              <div>
-                <input type="hidden" name="review[episode_id]" value="<%= @episode.id %>" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-10 push-down-1">
-                <input type="submit" value="Share your thoughts on <%= @episode.title %>" class="btn btn-default">
-              </div>
-            </div>
-          <% end %>
-        <% else %>
-          <h3 class="sign-in-prompt"><a href="/users/sign_in">Sign in</a> to share your thoughts</h3>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>

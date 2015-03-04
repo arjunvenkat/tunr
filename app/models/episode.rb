@@ -4,4 +4,6 @@ class Episode < ActiveRecord::Base
   has_many :upvotes, through: :reviews
 
   paginates_per 15
+
+
 end
