@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20150302195158) do
   create_table "episodes", force: :cascade do |t|
     t.integer  "podcast_id"
     t.string   "season"
-    t.integer  "episode_num"
+    t.string   "episode_num"
     t.string   "title"
     t.text     "desc"
     t.integer  "duration"
