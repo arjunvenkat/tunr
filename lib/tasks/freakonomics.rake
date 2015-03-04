@@ -44,6 +44,12 @@ namespace :scrape do
         end
 
         ep_desc = ep_row.search('td:nth-of-type(2)').text
+                                                      .gsub('&amp;', '&')
+                                                      .gsub('&nbsp;', ' ')
+                                                      .gsub('&ldquo;', '\"')
+                                                      .gsub('&rdquo;', '\"')
+                                                      .gsub('&rsquo;', '\'')
+                                                      .gsub('&rsquo;', '\"')
         # sanitizing title from ep_desc text
         ep_desc.slice!(ep_title)
 
